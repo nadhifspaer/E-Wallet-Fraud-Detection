@@ -1,0 +1,6 @@
+streamlit==1.67.0
+pandas==3.1.1
+numpy==2.4.6
+lightgbm==4.7.0
+shap==0.51.0
+matplotlib==3.11.2

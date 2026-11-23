@@ -84,6 +84,25 @@ services:
       api:
         condition: service_healthy
 
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dashboard
+    image: fraud-detection-tabular/dashboard
+    environment:
+      APP_MODE: local
+      SQLITE_PATH: /data/stream.db
+    volumes:
+      - stream_store:/data
+    ports:
+      - "127.0.0.1:8501:8501"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8501/_stcore/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
 volumes:
   stream_store:
     name: fraud-detection-tabular-stream-store

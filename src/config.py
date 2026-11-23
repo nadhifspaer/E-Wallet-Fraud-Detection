@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "processed" / "transactions.parquet"
 META_PATH = ROOT / "data" / "processed" / "meta.json"
+SAMPLE_PATH = ROOT / "data" / "sample" / "sample_features.csv"
 
 ANCHOR_DATE = date(2026, 1, 1)
 
