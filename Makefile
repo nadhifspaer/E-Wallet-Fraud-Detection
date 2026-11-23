@@ -11,4 +11,4 @@ setup:
 # lint and run tests
 check:
 	$(PY) -m ruff check .
-	$(PY) -m pytest -q; rc=$$?; [ $$rc -eq 0 ] || [ $$rc -eq 5 ]
+	$(PY) -m pytest -q

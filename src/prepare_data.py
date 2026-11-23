@@ -35,7 +35,7 @@ def prepare() -> dict:
 
     meta = {
         "max_step": int(df["step"].max()),
-        "row_count": int(len(df)),
+        "row_count": len(df),
         "fraud_count": int(df["isFraud"].sum()),
     }
     META_PATH.write_text(json.dumps(meta, indent=2) + "\n")
