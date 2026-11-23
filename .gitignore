@@ -1,0 +1,10 @@
+data/*
+!data/sample/
+__pycache__/
+.venv/
+.ipynb_checkpoints/
+.env
+airflow/logs/
+logs/
+.pytest_cache/
+.ruff_cache/
