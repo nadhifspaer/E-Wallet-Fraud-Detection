@@ -1,0 +1,36 @@
+# producer build stage
+FROM python:3.11-slim AS producer-build
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+COPY docker/requirements-producer.txt .
+RUN pip install --no-cache-dir -r requirements-producer.txt
+
+# producer runtime stage
+FROM python:3.11-slim AS producer
+RUN useradd --system --uid 10001 --no-create-home app
+COPY --from=producer-build /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY src/__init__.py src/config.py src/
+COPY streaming/__init__.py streaming/producer.py streaming/
+USER app
+CMD ["python", "-m", "streaming.producer"]
+
+# consumer build stage
+FROM python:3.11-slim AS consumer-build
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+COPY docker/requirements-consumer.txt .
+RUN pip install --no-cache-dir -r requirements-consumer.txt
+
+# consumer runtime stage with a writable store directory
+FROM python:3.11-slim AS consumer
+RUN useradd --system --uid 10001 --no-create-home app \
+    && mkdir /data && chown app /data
+COPY --from=consumer-build /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY src/__init__.py src/config.py src/feature_engineering.py src/
+COPY streaming/__init__.py streaming/consumer.py streaming/
+USER app
+CMD ["python", "-m", "streaming.consumer"]

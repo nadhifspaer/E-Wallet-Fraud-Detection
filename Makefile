@@ -1,6 +1,8 @@
 PY := .venv/bin/python
 
-.PHONY: setup check train ablation
+.PHONY: setup check train ablation up down
+
+COMPOSE := docker compose -f docker/docker-compose.yml
 
 # create the virtual environment and install dependencies
 setup:
@@ -20,3 +22,11 @@ train:
 # run the additive feature ablation
 ablation:
 	$(PY) -m src.ablation
+
+# build and start the streaming stack
+up:
+	$(COMPOSE) up -d --build
+
+# stop the streaming stack and remove its volumes
+down:
+	$(COMPOSE) down -v

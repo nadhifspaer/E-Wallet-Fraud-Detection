@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from src.config import CUTOFF_STEP, FEATURE_LIST, TYPES
+from src import config
+from src.config import FEATURE_LIST, TYPES
 
 
 def build_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -21,5 +22,5 @@ def build_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def temporal_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Split rows into train (step <= CUTOFF_STEP) and test (step > CUTOFF_STEP)."""
-    mask = df["step"] <= CUTOFF_STEP
+    mask = df["step"] <= config.CUTOFF_STEP
     return df[mask], df[~mask]
