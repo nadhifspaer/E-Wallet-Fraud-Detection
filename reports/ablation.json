@@ -1,0 +1,87 @@
+{
+  "1 amount, hour": {
+    "n_features": 2,
+    "features": [
+      "amount",
+      "hour_of_day"
+    ],
+    "pr_auc": {
+      "transfer_cash_out": 0.40347891006940173,
+      "all_rows": 0.37145303360774673
+    }
+  },
+  "2 + type": {
+    "n_features": 7,
+    "features": [
+      "amount",
+      "hour_of_day",
+      "type_CASH_IN",
+      "type_CASH_OUT",
+      "type_DEBIT",
+      "type_PAYMENT",
+      "type_TRANSFER"
+    ],
+    "pr_auc": {
+      "transfer_cash_out": 0.5036025152689668,
+      "all_rows": 0.5036025152689669
+    }
+  },
+  "3 + old balances": {
+    "n_features": 9,
+    "features": [
+      "amount",
+      "hour_of_day",
+      "type_CASH_IN",
+      "type_CASH_OUT",
+      "type_DEBIT",
+      "type_PAYMENT",
+      "type_TRANSFER",
+      "oldbalanceOrg",
+      "oldbalanceDest"
+    ],
+    "pr_auc": {
+      "transfer_cash_out": 0.9768134317079251,
+      "all_rows": 0.9768125644858777
+    }
+  },
+  "4 + drain ratio": {
+    "n_features": 10,
+    "features": [
+      "amount",
+      "hour_of_day",
+      "type_CASH_IN",
+      "type_CASH_OUT",
+      "type_DEBIT",
+      "type_PAYMENT",
+      "type_TRANSFER",
+      "oldbalanceOrg",
+      "oldbalanceDest",
+      "orig_drain_ratio"
+    ],
+    "pr_auc": {
+      "transfer_cash_out": 0.9809050585766439,
+      "all_rows": 0.9807013855861145
+    }
+  },
+  "5 + new balances": {
+    "n_features": 12,
+    "features": [
+      "amount",
+      "hour_of_day",
+      "type_CASH_IN",
+      "type_CASH_OUT",
+      "type_DEBIT",
+      "type_PAYMENT",
+      "type_TRANSFER",
+      "oldbalanceOrg",
+      "oldbalanceDest",
+      "orig_drain_ratio",
+      "newbalanceOrig",
+      "newbalanceDest"
+    ],
+    "pr_auc": {
+      "transfer_cash_out": 0.9972423811302449,
+      "all_rows": 0.9972201084538919
+    }
+  }
+}

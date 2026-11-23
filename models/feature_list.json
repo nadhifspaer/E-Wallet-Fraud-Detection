@@ -1,0 +1,12 @@
+[
+  "hour_of_day",
+  "amount",
+  "oldbalanceOrg",
+  "oldbalanceDest",
+  "type_CASH_IN",
+  "type_CASH_OUT",
+  "type_DEBIT",
+  "type_PAYMENT",
+  "type_TRANSFER",
+  "orig_drain_ratio"
+]

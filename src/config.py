@@ -48,8 +48,18 @@ K_FIXED = (100, 500, 1000)
 K_VOLUME_FRACTIONS = (0.001, 0.005)
 TARGET_RECALLS = (0.8, 0.9)
 
-# assumed cost of one false positive in currency units, not derivable from PaySim
-FRICTION_COST_PER_FP = 5.0
+# assumed cost of one false positive in the units of the amount column
+FRICTION_COST_PER_FP = 10000.0
+FRICTION_MULTIPLIERS = (0.1, 1.0, 10.0)
+
+MODELS_DIR = ROOT / "models"
+MODEL_PATH = MODELS_DIR / "model.txt"
+FEATURE_LIST_PATH = MODELS_DIR / "feature_list.json"
+REPORTS_DIR = ROOT / "reports"
+METRICS_PATH = REPORTS_DIR / "metrics.json"
+ABLATION_PATH = REPORTS_DIR / "ablation.json"
+ABLATION_FIG_PATH = REPORTS_DIR / "figures" / "ablation_pr_auc.png"
+EVAL_POPULATIONS = {"transfer_cash_out": ("TRANSFER", "CASH_OUT"), "all_rows": None}
 
 
 def k_values(n_test_rows: int, n_test_fraud: int) -> list[int]:

@@ -1,0 +1,169 @@
+{
+  "cutoff_step": 594,
+  "friction_cost_per_fp": 10000.0,
+  "train": {
+    "n_rows": 6239040,
+    "n_fraud": 6559,
+    "prevalence": 0.0010512835307996103
+  },
+  "test": {
+    "transfer_cash_out": {
+      "n_rows": 51286,
+      "n_fraud": 1654,
+      "prevalence": 0.03225051671021331,
+      "median_legit_amount": 162603.885,
+      "pr_auc": 0.9809050585766439,
+      "precision_at_k": {
+        "51": 1.0,
+        "100": 1.0,
+        "256": 1.0,
+        "500": 1.0,
+        "1000": 0.998,
+        "1654": 0.9600967351874244
+      },
+      "recall_at_k": {
+        "51": 0.03083434099153567,
+        "100": 0.060459492140266025,
+        "256": 0.154776299879081,
+        "500": 0.3022974607013301,
+        "1000": 0.6033857315598549,
+        "1654": 0.9600967351874244
+      },
+      "at_target_recall": {
+        "0.8": {
+          "threshold": 0.9997582679359277,
+          "flagged": 1328,
+          "tp": 1324,
+          "fp": 4,
+          "recall": 0.8004836759371221,
+          "fpr": 8.059316569954868e-05,
+          "prevented_loss": 2668782190.92,
+          "missed_loss": 53652378.44,
+          "cost": {
+            "friction_x0.1": {
+              "friction_cost": 4000.0,
+              "total_cost": 53656378.44,
+              "net_benefit": 2668778190.92
+            },
+            "friction_x1": {
+              "friction_cost": 40000.0,
+              "total_cost": 53692378.44,
+              "net_benefit": 2668742190.92
+            },
+            "friction_x10": {
+              "friction_cost": 400000.0,
+              "total_cost": 54052378.44,
+              "net_benefit": 2668382190.92
+            }
+          }
+        },
+        "0.9": {
+          "threshold": 0.9879426361509983,
+          "flagged": 1523,
+          "tp": 1489,
+          "fp": 34,
+          "recall": 0.900241837968561,
+          "fpr": 0.0006850419084461637,
+          "prevented_loss": 2697870304.1800003,
+          "missed_loss": 24564265.18,
+          "cost": {
+            "friction_x0.1": {
+              "friction_cost": 34000.0,
+              "total_cost": 24598265.18,
+              "net_benefit": 2697836304.1800003
+            },
+            "friction_x1": {
+              "friction_cost": 340000.0,
+              "total_cost": 24904265.18,
+              "net_benefit": 2697530304.1800003
+            },
+            "friction_x10": {
+              "friction_cost": 3400000.0,
+              "total_cost": 27964265.18,
+              "net_benefit": 2694470304.1800003
+            }
+          }
+        }
+      }
+    },
+    "all_rows": {
+      "n_rows": 123580,
+      "n_fraud": 1654,
+      "prevalence": 0.01338404272536009,
+      "median_legit_amount": 66393.20999999999,
+      "pr_auc": 0.9807013855861145,
+      "precision_at_k": {
+        "100": 1.0,
+        "124": 1.0,
+        "500": 1.0,
+        "618": 1.0,
+        "1000": 0.998,
+        "1654": 0.9600967351874244
+      },
+      "recall_at_k": {
+        "100": 0.060459492140266025,
+        "124": 0.07496977025392987,
+        "500": 0.3022974607013301,
+        "618": 0.373639661426844,
+        "1000": 0.6033857315598549,
+        "1654": 0.9600967351874244
+      },
+      "at_target_recall": {
+        "0.8": {
+          "threshold": 0.9997582679359277,
+          "flagged": 1328,
+          "tp": 1324,
+          "fp": 4,
+          "recall": 0.8004836759371221,
+          "fpr": 3.280678444302282e-05,
+          "prevented_loss": 2668782190.92,
+          "missed_loss": 53652378.44,
+          "cost": {
+            "friction_x0.1": {
+              "friction_cost": 4000.0,
+              "total_cost": 53656378.44,
+              "net_benefit": 2668778190.92
+            },
+            "friction_x1": {
+              "friction_cost": 40000.0,
+              "total_cost": 53692378.44,
+              "net_benefit": 2668742190.92
+            },
+            "friction_x10": {
+              "friction_cost": 400000.0,
+              "total_cost": 54052378.44,
+              "net_benefit": 2668382190.92
+            }
+          }
+        },
+        "0.9": {
+          "threshold": 0.9879426361509983,
+          "flagged": 1523,
+          "tp": 1489,
+          "fp": 34,
+          "recall": 0.900241837968561,
+          "fpr": 0.00027885766776569395,
+          "prevented_loss": 2697870304.1800003,
+          "missed_loss": 24564265.18,
+          "cost": {
+            "friction_x0.1": {
+              "friction_cost": 34000.0,
+              "total_cost": 24598265.18,
+              "net_benefit": 2697836304.1800003
+            },
+            "friction_x1": {
+              "friction_cost": 340000.0,
+              "total_cost": 24904265.18,
+              "net_benefit": 2697530304.1800003
+            },
+            "friction_x10": {
+              "friction_cost": 3400000.0,
+              "total_cost": 27964265.18,
+              "net_benefit": 2694470304.1800003
+            }
+          }
+        }
+      }
+    }
+  }
+}
