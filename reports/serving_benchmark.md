@@ -26,13 +26,13 @@ Targets are proposals fixed before the runs. Latency values are measurements, wi
 | Rollout undo | Failed requests during failed rollout and undo | 0 | 0 of 11257 |
 | Rollout undo | Ready pods during the failed rollout | at least 1 | 2 |
 | Rollout undo | Image after undo | previous image | `fraud-api:1.0.0` |
-| Scale-out | First replica increase after load start | above min of 2 | 60 s |
-| Scale-out | Peak replicas | above min of 2 | 6 (max 6) |
+| Scale-out | First replica increase after load start | above min of 2 | 184 s |
+| Scale-out | Peak replicas | above min of 2 | 4 (max 6) |
 | Scale-out | Return to min after load end | after the default scale-down delay | 350 s |
 
 ### Latency
 
-Load: constant 10 users for the self-heal and rollout runs.
+Load: constant 10 users with a think time of 0.05 to 0.15 s per user for the self-heal and rollout runs. The scale-out run uses the moderate profile (think time 0.5 to 1.5 s per user).
 
 | Run | Requests | RPS | p50 ms | p95 ms | p99 ms |
 |---|---|---|---|---|---|
@@ -40,32 +40,36 @@ Load: constant 10 users for the self-heal and rollout runs.
 | Rolling update | 11453 | 96.2 | 4.0 | 6.0 | 7.0 |
 | Recreate | 9308 | 78.1 | 4.0 | 8.0 | 11.0 |
 | Rollout undo | 11257 | 94.5 | 5.0 | 8.0 | 10.0 |
-| Scale-out, whole run | 346667 | 823.7 | 50.0 | 200.0 | 300.0 |
+| Scale-out, moderate profile, whole run | 61118 | 145.4 | 4.0 | 7.0 | 11.0 |
 
-### Scale-out, p95 by phase
+### Scale-out, moderate profile, p95 by phase
 
-Users ramp from 10 to 200 over 120 s, then hold for 240 s. Each value is the median of the per-interval p95 reported by Locust in that window.
+Think time 0.5 to 1.5 s per user. The deployment started at 2 replicas after 17 s of settling (three consecutive CPU readings below the target). Users ramp from 10 to 200 over 120 s, then hold for 240 s. Each value is the median of the per-interval p95 reported by Locust in that window.
 
 | Phase | Seconds from start | p95 ms |
 |---|---|---|
-| Before ramp | 0 to 60 | 9.0 |
-| Ramp | 60 to 180 | 160.0 |
-| Hold, early | 180 to 300 | 210.0 |
-| Hold, late | 300 to 420 | 210.0 |
+| Before ramp | 0 to 60 | 4.0 |
+| Ramp | 60 to 180 | 6.0 |
+| Hold, early | 180 to 300 | 7.0 |
+| Hold, late | 300 to 420 | 7.0 |
 
 Replica and CPU samples over time are in `reports/serving_results/hpa.json` (`series`) and the raw logs are in `reports/serving_results/raw/`.
 
+### Scale-out, stress run
+
+The first scale-out run used a think time of 0.05 to 0.15 s per user with the same 10 to 200 user ramp. Whole-run average load was 823.7 requests per second (346667 requests, 0 failures). Replicas reached 6. p95 was 9.0 ms before the ramp, 160.0 ms during the ramp, and 210.0 ms and 210.0 ms in the two hold windows, so p95 did not recover. The single machine shared with the load generator was the limit. Data: `reports/serving_results/hpa_stress.json`.
+
 ## Targets missed
 
-- Scale-out p95 recovery: p95 was 9.0 ms before the ramp and 210.0 ms in the last 120 s of the hold, after the replicas reached 6. It did not return to the pre-ramp level.
+- Scale-out p95 recovery: p95 was 4.0 ms before the ramp and 7.0 ms in the last 120 s of the hold, after the replicas reached 4. It did not return to the pre-ramp level.
 
 ## Limits
 
 - The load generator and the cluster share one machine and one CPU budget. Locust competes with the API pods, the kind node, and metrics-server for the same cores.
 - Single-node kind demonstrates mechanisms (probes, restarts, rolling updates, autoscaling). The numbers do not describe production capacity.
-- The Locust process is single-threaded Python. At 200 users it can limit the offered rate before the API does.
+- The Locust process is single-threaded Python. At 200 users it can limit the offered rate before the API does, mainly in the stress run.
 - During the self-heal and rollout runs the HPA is removed so the replica count stays at 2. It is applied again for the scale-out run.
-- Each user waits 0.05 to 0.15 s between requests (unchanged from the first round). At 200 users this saturates the API pods and the shared CPU.
+- Think time per user: 0.5 to 1.5 s in the moderate scale-out profile, 0.05 to 0.15 s in the stress run and in the self-heal and rollout runs.
 - The pods are given a 10 s `preStop` sleep and a 60 s termination grace period before the rolling update run.
 - Each run is a single execution. No repeat or confidence interval is reported.
 - Request payloads are rows from `data/sample/sample_features.csv`, so the score distribution is not production traffic.

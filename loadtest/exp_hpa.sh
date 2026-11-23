@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
 
-EXP=hpa
-RAW="$OUT/raw/$EXP"
+PROFILE="${1:-moderate}"
+case "$PROFILE" in
+  moderate) export THINK_MIN=0.5 THINK_MAX=1.5 OUT_NAME=hpa ;;
+  stress) export THINK_MIN=0.05 THINK_MAX=0.15 OUT_NAME=hpa_stress ;;
+  *) echo "usage: exp_hpa.sh [moderate|stress]" >&2; exit 2 ;;
+esac
+RAW="$OUT/raw/$OUT_NAME"
 mkdir -p "$RAW"
 SCALE_DOWN_WAIT=720
 

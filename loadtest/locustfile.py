@@ -29,7 +29,10 @@ TIMEOUT = float(os.environ.get("REQUEST_TIMEOUT", "5"))
 
 
 class ScoringUser(HttpUser):
-    wait_time = between(0.05, 0.15)
+    wait_time = between(
+        float(os.environ.get("THINK_MIN", "0.05")),
+        float(os.environ.get("THINK_MAX", "0.15")),
+    )
 
     @task
     def predict(self) -> None:

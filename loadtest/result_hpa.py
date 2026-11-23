@@ -32,7 +32,8 @@ def main() -> None:
     phases = {n: summarize(raw + "/load", t0 + a, t0 + b) for n, a, b in PHASES}
     down = env["T_DOWN"]
     res = {
-        "experiment": "hpa",
+        "experiment": env["OUT_NAME"],
+        "think_time_seconds": [float(env["THINK_MIN"]), float(env["THINK_MAX"])],
         "environment": json.loads(env["ENV_JSON"]),
         "load": {
             "users_from": 10,
@@ -56,7 +57,7 @@ def main() -> None:
         "overall": summarize(raw + "/load"),
         "series": series,
     }
-    with open(env["OUT"] + "/hpa.json", "w") as f:
+    with open(env["OUT"] + f"/{env['OUT_NAME']}.json", "w") as f:
         json.dump(res, f, indent=2)
     print(json.dumps({k: v for k, v in res.items() if k != "series"}, indent=2))
 

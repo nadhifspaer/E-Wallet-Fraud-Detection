@@ -1,110 +1,112 @@
-1795463480	2 2	1	fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-q2q7h:4m 
-1795463485	2 2	1	fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-q2q7h:4m 
-1795463491	2 2	1	fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-q2q7h:4m 
-1795463496	2 2	1	fraud-api-669d85cfdf-pgxw5:35m fraud-api-669d85cfdf-q2q7h:49m 
-1795463502	2 2	1	fraud-api-669d85cfdf-pgxw5:35m fraud-api-669d85cfdf-q2q7h:49m 
-1795463507	2 2	1	fraud-api-669d85cfdf-pgxw5:35m fraud-api-669d85cfdf-q2q7h:49m 
-1795463513	2 2	16	fraud-api-669d85cfdf-pgxw5:104m fraud-api-669d85cfdf-q2q7h:221m 
-1795463518	2 2	16	fraud-api-669d85cfdf-pgxw5:104m fraud-api-669d85cfdf-q2q7h:221m 
-1795463523	2 2	16	fraud-api-669d85cfdf-pgxw5:104m fraud-api-669d85cfdf-q2q7h:221m 
-1795463529	2 3	65	fraud-api-669d85cfdf-pgxw5:101m fraud-api-669d85cfdf-q2q7h:220m 
-1795463534	2 3	65	fraud-api-669d85cfdf-pgxw5:101m fraud-api-669d85cfdf-q2q7h:220m 
-1795463540	3 3	64	fraud-api-669d85cfdf-pgxw5:101m fraud-api-669d85cfdf-q2q7h:220m 
-1795463545	3 3	64	fraud-api-669d85cfdf-pgxw5:104m fraud-api-669d85cfdf-plh4b:134m fraud-api-669d85cfdf-q2q7h:220m 
-1795463551	3 3	64	fraud-api-669d85cfdf-pgxw5:104m fraud-api-669d85cfdf-plh4b:134m fraud-api-669d85cfdf-q2q7h:220m 
-1795463556	3 3	64	fraud-api-669d85cfdf-pgxw5:123m fraud-api-669d85cfdf-plh4b:79m fraud-api-669d85cfdf-q2q7h:223m 
-1795463562	3 3	64	fraud-api-669d85cfdf-pgxw5:123m fraud-api-669d85cfdf-plh4b:79m fraud-api-669d85cfdf-q2q7h:223m 
-1795463567	3 3	64	fraud-api-669d85cfdf-pgxw5:123m fraud-api-669d85cfdf-plh4b:79m fraud-api-669d85cfdf-q2q7h:223m 
-1795463573	3 4	56	fraud-api-669d85cfdf-pgxw5:257m fraud-api-669d85cfdf-plh4b:179m fraud-api-669d85cfdf-q2q7h:374m 
-1795463578	3 4	56	fraud-api-669d85cfdf-pgxw5:257m fraud-api-669d85cfdf-plh4b:179m fraud-api-669d85cfdf-q2q7h:374m 
-1795463584	3 4	56	fraud-api-669d85cfdf-pgxw5:257m fraud-api-669d85cfdf-plh4b:179m fraud-api-669d85cfdf-q2q7h:374m 
-1795463589	4 6	108	fraud-api-669d85cfdf-bcd5f:151m fraud-api-669d85cfdf-pgxw5:365m fraud-api-669d85cfdf-plh4b:326m fraud-api-669d85cfdf-q2q7h:497m 
-1795463595	4 6	108	fraud-api-669d85cfdf-bcd5f:151m fraud-api-669d85cfdf-pgxw5:365m fraud-api-669d85cfdf-plh4b:326m fraud-api-669d85cfdf-q2q7h:497m 
-1795463600	6 6	158	fraud-api-669d85cfdf-bcd5f:151m fraud-api-669d85cfdf-pgxw5:365m fraud-api-669d85cfdf-plh4b:326m fraud-api-669d85cfdf-q2q7h:497m 
-1795463606	6 6	158	fraud-api-669d85cfdf-bcd5f:229m fraud-api-669d85cfdf-pgxw5:458m fraud-api-669d85cfdf-plh4b:472m fraud-api-669d85cfdf-q2q7h:502m fraud-api-669d85cfdf-r77cc:131m fraud-api-669d85cfdf-sb5gp:178m 
-1795463612	6 6	158	fraud-api-669d85cfdf-bcd5f:229m fraud-api-669d85cfdf-pgxw5:458m fraud-api-669d85cfdf-plh4b:472m fraud-api-669d85cfdf-q2q7h:502m fraud-api-669d85cfdf-r77cc:131m fraud-api-669d85cfdf-sb5gp:178m 
-1795463617	6 6	166	fraud-api-669d85cfdf-bcd5f:254m fraud-api-669d85cfdf-pgxw5:490m fraud-api-669d85cfdf-plh4b:472m fraud-api-669d85cfdf-q2q7h:498m fraud-api-669d85cfdf-r77cc:131m fraud-api-669d85cfdf-sb5gp:68m 
-1795463623	6 6	166	fraud-api-669d85cfdf-bcd5f:254m fraud-api-669d85cfdf-pgxw5:490m fraud-api-669d85cfdf-plh4b:472m fraud-api-669d85cfdf-q2q7h:498m fraud-api-669d85cfdf-r77cc:131m fraud-api-669d85cfdf-sb5gp:68m 
-1795463628	6 6	166	fraud-api-669d85cfdf-bcd5f:254m fraud-api-669d85cfdf-pgxw5:490m fraud-api-669d85cfdf-plh4b:472m fraud-api-669d85cfdf-q2q7h:498m fraud-api-669d85cfdf-r77cc:131m fraud-api-669d85cfdf-sb5gp:68m 
-1795463634	6 6	142	fraud-api-669d85cfdf-bcd5f:381m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:179m fraud-api-669d85cfdf-sb5gp:68m 
-1795463639	6 6	142	fraud-api-669d85cfdf-bcd5f:381m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:179m fraud-api-669d85cfdf-sb5gp:68m 
-1795463645	6 6	141	fraud-api-669d85cfdf-bcd5f:381m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:179m fraud-api-669d85cfdf-sb5gp:68m 
-1795463651	6 6	141	fraud-api-669d85cfdf-bcd5f:486m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:342m fraud-api-669d85cfdf-sb5gp:158m 
-1795463656	6 6	141	fraud-api-669d85cfdf-bcd5f:486m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:342m fraud-api-669d85cfdf-sb5gp:158m 
-1795463662	6 6	165	fraud-api-669d85cfdf-bcd5f:496m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:342m fraud-api-669d85cfdf-sb5gp:375m 
-1795463667	6 6	165	fraud-api-669d85cfdf-bcd5f:496m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:342m fraud-api-669d85cfdf-sb5gp:375m 
-1795463673	6 6	165	fraud-api-669d85cfdf-bcd5f:496m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:342m fraud-api-669d85cfdf-sb5gp:375m 
-1795463679	6 6	180	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:499m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:451m fraud-api-669d85cfdf-sb5gp:479m 
-1795463684	6 6	180	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:499m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:451m fraud-api-669d85cfdf-sb5gp:479m 
-1795463690	6 6	195	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:499m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:451m fraud-api-669d85cfdf-sb5gp:479m 
-1795463695	6 6	195	fraud-api-669d85cfdf-bcd5f:500m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:485m fraud-api-669d85cfdf-sb5gp:483m 
-1795463701	6 6	195	fraud-api-669d85cfdf-bcd5f:500m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:485m fraud-api-669d85cfdf-sb5gp:483m 
-1795463707	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:499m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:489m fraud-api-669d85cfdf-sb5gp:490m 
-1795463712	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:499m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:489m fraud-api-669d85cfdf-sb5gp:490m 
-1795463718	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:499m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:489m fraud-api-669d85cfdf-sb5gp:490m 
-1795463723	6 6	198	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:490m 
-1795463729	6 6	198	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:490m 
-1795463734	6 6	198	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:490m 
-1795463740	6 6	198	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:502m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:483m 
-1795463746	6 6	198	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:502m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:483m 
-1795463751	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:498m fraud-api-669d85cfdf-q2q7h:498m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:484m 
-1795463757	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:498m fraud-api-669d85cfdf-q2q7h:498m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:484m 
-1795463762	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:498m fraud-api-669d85cfdf-q2q7h:498m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:484m 
-1795463768	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:487m 
-1795463774	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:487m 
-1795463779	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:487m 
-1795463785	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:488m fraud-api-669d85cfdf-sb5gp:482m 
-1795463790	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:488m fraud-api-669d85cfdf-sb5gp:482m 
-1795463796	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:488m fraud-api-669d85cfdf-sb5gp:482m 
-1795463801	6 6	198	fraud-api-669d85cfdf-bcd5f:500m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:486m 
-1795463807	6 6	198	fraud-api-669d85cfdf-bcd5f:500m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:487m fraud-api-669d85cfdf-sb5gp:486m 
-1795463813	6 6	198	fraud-api-669d85cfdf-bcd5f:496m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:486m 
-1795463818	6 6	198	fraud-api-669d85cfdf-bcd5f:496m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:486m 
-1795463824	6 6	198	fraud-api-669d85cfdf-bcd5f:496m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:486m 
-1795463829	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:488m fraud-api-669d85cfdf-sb5gp:484m 
-1795463835	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:488m fraud-api-669d85cfdf-sb5gp:484m 
-1795463841	6 6	198	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:488m fraud-api-669d85cfdf-sb5gp:484m 
-1795463846	6 6	198	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:484m fraud-api-669d85cfdf-sb5gp:480m 
-1795463852	6 6	198	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:484m fraud-api-669d85cfdf-sb5gp:480m 
-1795463857	6 6	197	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:478m fraud-api-669d85cfdf-sb5gp:480m 
-1795463863	6 6	197	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:478m fraud-api-669d85cfdf-sb5gp:480m 
-1795463868	6 6	197	fraud-api-669d85cfdf-bcd5f:497m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:478m fraud-api-669d85cfdf-sb5gp:480m 
-1795463874	6 6	197	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:485m 
-1795463880	6 6	197	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:485m 
-1795463885	6 6	197	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:501m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:483m fraud-api-669d85cfdf-sb5gp:485m 
-1795463891	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:485m fraud-api-669d85cfdf-sb5gp:487m 
-1795463896	6 6	197	fraud-api-669d85cfdf-bcd5f:498m fraud-api-669d85cfdf-pgxw5:501m fraud-api-669d85cfdf-plh4b:499m fraud-api-669d85cfdf-q2q7h:501m fraud-api-669d85cfdf-r77cc:485m fraud-api-669d85cfdf-sb5gp:487m 
-1795463902	6 6	198	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:486m fraud-api-669d85cfdf-sb5gp:481m 
-1795463912	6 6	198	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:500m fraud-api-669d85cfdf-plh4b:500m fraud-api-669d85cfdf-q2q7h:500m fraud-api-669d85cfdf-r77cc:486m fraud-api-669d85cfdf-sb5gp:481m 
-1795463923	6 6	197	fraud-api-669d85cfdf-bcd5f:499m fraud-api-669d85cfdf-pgxw5:460m fraud-api-669d85cfdf-plh4b:401m fraud-api-669d85cfdf-q2q7h:92m fraud-api-669d85cfdf-r77cc:86m fraud-api-669d85cfdf-sb5gp:481m 
-1795463934	6 6	134	fraud-api-669d85cfdf-bcd5f:35m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:5m fraud-api-669d85cfdf-q2q7h:5m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:30m 
-1795463944	6 6	134	fraud-api-669d85cfdf-bcd5f:35m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:5m fraud-api-669d85cfdf-q2q7h:5m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:30m 
-1795463955	6 6	5	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:5m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795463965	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795463976	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795463987	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795463997	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:5m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464008	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464018	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464029	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:3m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464040	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464050	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464061	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:5m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464071	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:3m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464082	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:3m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464093	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:3m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464103	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464114	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464124	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464135	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464146	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:3m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464156	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464167	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464178	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464188	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:3m fraud-api-669d85cfdf-q2q7h:3m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464199	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:3m fraud-api-669d85cfdf-q2q7h:3m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464209	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464220	6 6	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464231	6 2	1	fraud-api-669d85cfdf-bcd5f:4m fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-plh4b:4m fraud-api-669d85cfdf-q2q7h:4m fraud-api-669d85cfdf-r77cc:4m fraud-api-669d85cfdf-sb5gp:3m 
-1795464241	6 2	1	fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-sb5gp:4m 
-1795464252	2 2	1	fraud-api-669d85cfdf-pgxw5:4m fraud-api-669d85cfdf-sb5gp:4m 
+1795465541	2 2	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-t6pw7:2m 
+1795465547	2 2	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-t6pw7:4m 
+1795465552	2 2	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-t6pw7:4m 
+1795465557	2 2	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-t6pw7:4m 
+1795465563	2 2	1	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:21m 
+1795465568	2 2	1	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:21m 
+1795465573	2 2	6	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:21m 
+1795465579	2 2	6	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:21m 
+1795465584	2 2	6	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:21m 
+1795465590	2 2	6	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:20m 
+1795465595	2 2	6	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:20m 
+1795465600	2 2	6	fraud-api-669d85cfdf-5bmxt:11m fraud-api-669d85cfdf-t6pw7:20m 
+1795465606	2 2	6	fraud-api-669d85cfdf-5bmxt:10m fraud-api-669d85cfdf-t6pw7:20m 
+1795465611	2 2	6	fraud-api-669d85cfdf-5bmxt:10m fraud-api-669d85cfdf-t6pw7:20m 
+1795465617	2 2	6	fraud-api-669d85cfdf-5bmxt:10m fraud-api-669d85cfdf-t6pw7:20m 
+1795465622	2 2	6	fraud-api-669d85cfdf-5bmxt:14m fraud-api-669d85cfdf-t6pw7:33m 
+1795465627	2 2	6	fraud-api-669d85cfdf-5bmxt:14m fraud-api-669d85cfdf-t6pw7:33m 
+1795465633	2 2	9	fraud-api-669d85cfdf-5bmxt:14m fraud-api-669d85cfdf-t6pw7:33m 
+1795465638	2 2	9	fraud-api-669d85cfdf-5bmxt:42m fraud-api-669d85cfdf-t6pw7:68m 
+1795465644	2 2	9	fraud-api-669d85cfdf-5bmxt:42m fraud-api-669d85cfdf-t6pw7:68m 
+1795465649	2 2	22	fraud-api-669d85cfdf-5bmxt:81m fraud-api-669d85cfdf-t6pw7:93m 
+1795465654	2 2	22	fraud-api-669d85cfdf-5bmxt:81m fraud-api-669d85cfdf-t6pw7:93m 
+1795465660	2 2	22	fraud-api-669d85cfdf-5bmxt:81m fraud-api-669d85cfdf-t6pw7:93m 
+1795465665	2 2	34	fraud-api-669d85cfdf-5bmxt:116m fraud-api-669d85cfdf-t6pw7:120m 
+1795465671	2 2	34	fraud-api-669d85cfdf-5bmxt:116m fraud-api-669d85cfdf-t6pw7:120m 
+1795465676	2 2	47	fraud-api-669d85cfdf-5bmxt:116m fraud-api-669d85cfdf-t6pw7:120m 
+1795465682	2 2	47	fraud-api-669d85cfdf-5bmxt:116m fraud-api-669d85cfdf-t6pw7:138m 
+1795465687	2 2	47	fraud-api-669d85cfdf-5bmxt:116m fraud-api-669d85cfdf-t6pw7:138m 
+1795465692	2 2	50	fraud-api-669d85cfdf-5bmxt:116m fraud-api-669d85cfdf-t6pw7:138m 
+1795465698	2 2	50	fraud-api-669d85cfdf-5bmxt:148m fraud-api-669d85cfdf-t6pw7:166m 
+1795465703	2 2	50	fraud-api-669d85cfdf-5bmxt:148m fraud-api-669d85cfdf-t6pw7:166m 
+1795465708	2 3	62	fraud-api-669d85cfdf-5bmxt:183m fraud-api-669d85cfdf-t6pw7:166m 
+1795465714	2 3	62	fraud-api-669d85cfdf-5bmxt:183m fraud-api-669d85cfdf-t6pw7:166m 
+1795465719	2 3	62	fraud-api-669d85cfdf-5bmxt:183m fraud-api-669d85cfdf-t6pw7:166m 
+1795465725	3 3	69	fraud-api-669d85cfdf-5bmxt:183m fraud-api-669d85cfdf-ckcpf:114m fraud-api-669d85cfdf-t6pw7:205m 
+1795465730	3 3	69	fraud-api-669d85cfdf-5bmxt:183m fraud-api-669d85cfdf-ckcpf:114m fraud-api-669d85cfdf-t6pw7:205m 
+1795465736	3 3	69	fraud-api-669d85cfdf-5bmxt:183m fraud-api-669d85cfdf-ckcpf:114m fraud-api-669d85cfdf-t6pw7:205m 
+1795465741	3 3	77	fraud-api-669d85cfdf-5bmxt:207m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-t6pw7:232m 
+1795465746	3 3	77	fraud-api-669d85cfdf-5bmxt:207m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-t6pw7:232m 
+1795465752	3 4	59	fraud-api-669d85cfdf-5bmxt:207m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-t6pw7:232m 
+1795465757	3 4	59	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-t6pw7:237m 
+1795465763	3 4	59	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-t6pw7:237m 
+1795465768	4 4	61	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-t6pw7:237m 
+1795465773	4 4	61	fraud-api-669d85cfdf-5bmxt:213m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:118m fraud-api-669d85cfdf-t6pw7:233m 
+1795465779	4 4	61	fraud-api-669d85cfdf-5bmxt:213m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:118m fraud-api-669d85cfdf-t6pw7:233m 
+1795465784	4 4	60	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:233m 
+1795465790	4 4	60	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:233m 
+1795465795	4 4	60	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:233m 
+1795465800	4 4	45	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:232m 
+1795465806	4 4	45	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:232m 
+1795465811	4 4	45	fraud-api-669d85cfdf-5bmxt:214m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:232m 
+1795465817	4 4	45	fraud-api-669d85cfdf-5bmxt:210m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:231m 
+1795465822	4 4	45	fraud-api-669d85cfdf-5bmxt:210m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:231m 
+1795465827	4 4	45	fraud-api-669d85cfdf-5bmxt:210m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:231m 
+1795465833	4 4	45	fraud-api-669d85cfdf-5bmxt:209m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:230m 
+1795465838	4 4	45	fraud-api-669d85cfdf-5bmxt:209m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:230m 
+1795465844	4 4	45	fraud-api-669d85cfdf-5bmxt:210m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:229m 
+1795465849	4 4	45	fraud-api-669d85cfdf-5bmxt:210m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:229m 
+1795465854	4 4	45	fraud-api-669d85cfdf-5bmxt:210m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:229m 
+1795465860	4 4	45	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:229m 
+1795465865	4 4	45	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:229m 
+1795465871	4 4	45	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:229m 
+1795465876	4 4	45	fraud-api-669d85cfdf-5bmxt:211m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:235m 
+1795465882	4 4	45	fraud-api-669d85cfdf-5bmxt:211m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:235m 
+1795465887	4 4	45	fraud-api-669d85cfdf-5bmxt:211m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:235m 
+1795465892	4 4	45	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:235m 
+1795465898	4 4	45	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:235m 
+1795465903	4 4	46	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:235m 
+1795465909	4 4	46	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:238m 
+1795465914	4 4	46	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:238m 
+1795465919	4 4	46	fraud-api-669d85cfdf-5bmxt:215m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:232m 
+1795465925	4 4	46	fraud-api-669d85cfdf-5bmxt:215m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:232m 
+1795465930	4 4	46	fraud-api-669d85cfdf-5bmxt:215m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:232m 
+1795465936	4 4	45	fraud-api-669d85cfdf-5bmxt:219m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:243m 
+1795465941	4 4	45	fraud-api-669d85cfdf-5bmxt:219m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:243m 
+1795465946	4 4	47	fraud-api-669d85cfdf-5bmxt:219m fraud-api-669d85cfdf-ckcpf:10m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:243m 
+1795465952	4 4	47	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:243m 
+1795465957	4 4	47	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:243m 
+1795465963	4 4	46	fraud-api-669d85cfdf-5bmxt:212m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:2m fraud-api-669d85cfdf-t6pw7:243m 
+1795465974	4 4	46	fraud-api-669d85cfdf-5bmxt:260m fraud-api-669d85cfdf-ckcpf:11m fraud-api-669d85cfdf-mrdxh:3m fraud-api-669d85cfdf-t6pw7:240m 
+1795465984	4 4	51	fraud-api-669d85cfdf-5bmxt:115m fraud-api-669d85cfdf-ckcpf:12m fraud-api-669d85cfdf-mrdxh:3m fraud-api-669d85cfdf-t6pw7:211m 
+1795465995	4 4	34	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:5m 
+1795466005	4 4	34	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:5m 
+1795466016	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466027	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466037	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466048	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466058	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466069	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466080	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466090	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466101	4 4	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466111	4 4	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466122	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466133	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466143	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466154	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466164	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466175	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466185	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466196	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466207	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466217	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466228	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466238	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466249	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466260	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466270	4 4	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-ckcpf:4m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466281	4 3	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-ckcpf:3m fraud-api-669d85cfdf-mrdxh:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466291	4 3	1	fraud-api-669d85cfdf-5bmxt:3m fraud-api-669d85cfdf-ckcpf:3m fraud-api-669d85cfdf-t6pw7:4m 
+1795466302	3 2	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-t6pw7:4m 
+1795466313	2 2	1	fraud-api-669d85cfdf-5bmxt:4m fraud-api-669d85cfdf-t6pw7:4m 

@@ -32,6 +32,8 @@ def missed(hpa: dict) -> list[str]:
 def build() -> str:
     """Render the serving benchmark report from the result JSON files."""
     heal, roll, hpa = load("selfheal"), load("rollout"), load("hpa")
+    stress = load("hpa_stress")
+    sp95 = stress["p95_ms_by_phase"]
     env = heal["environment"]
     ph = roll["phases"]
     p95 = hpa["p95_ms_by_phase"]
@@ -82,7 +84,11 @@ def build() -> str:
         "",
         "### Latency",
         "",
-        "Load: constant 10 users for the self-heal and rollout runs.",
+        (
+            "Load: constant 10 users with a think time of 0.05 to 0.15 s per user for the "
+            "self-heal and rollout runs. The scale-out run uses the moderate profile "
+            f"(think time {hpa['think_time_seconds'][0]} to {hpa['think_time_seconds'][1]} s per user)."
+        ),
         "",
         "| Run | Requests | RPS | p50 ms | p95 ms | p99 ms |",
         "|---|---|---|---|---|---|",
@@ -92,7 +98,7 @@ def build() -> str:
         ("Rolling update", ph["rolling"]),
         ("Recreate", ph["recreate"]),
         ("Rollout undo", ph["undo"]),
-        ("Scale-out, whole run", hpa["overall"]),
+        ("Scale-out, moderate profile, whole run", hpa["overall"]),
     ]
     for name, r in runs:
         lines.append(
@@ -100,9 +106,12 @@ def build() -> str:
         )
     lines += [
         "",
-        "### Scale-out, p95 by phase",
+        "### Scale-out, moderate profile, p95 by phase",
         "",
         (
+            f"Think time {hpa['think_time_seconds'][0]} to {hpa['think_time_seconds'][1]} s per user. "
+            f"The deployment started at {hpa['start_replicas']} replicas after "
+            f"{hpa['settle_wait_seconds']} s of settling (three consecutive CPU readings below the target). "
             f"Users ramp from {hpa['load']['users_from']} to {hpa['load']['users_to']} over "
             f"{hpa['load']['ramp_seconds']} s, then hold for {hpa['load']['hold_seconds']} s. "
             "Each value is the median of the per-interval p95 reported by Locust in that window."
@@ -120,6 +129,18 @@ def build() -> str:
             "and the raw logs are in `reports/serving_results/raw/`."
         ),
         "",
+        "### Scale-out, stress run",
+        "",
+        (
+            "The first scale-out run used a think time of 0.05 to 0.15 s per user with the same "
+            f"10 to 200 user ramp. Whole-run average load was {stress['overall']['rps']} requests per second "
+            f"({stress['overall']['requests']} requests, {stress['overall']['failures']} failures). "
+            f"Replicas reached {stress['peak_replicas']}. p95 was {sp95['before']} ms before the ramp, "
+            f"{sp95['ramp']} ms during the ramp, and {sp95['hold_early']} ms and {sp95['hold_late']} ms "
+            "in the two hold windows, so p95 did not recover. The single machine shared with the "
+            "load generator was the limit. Data: `reports/serving_results/hpa_stress.json`."
+        ),
+        "",
         "## Targets missed",
         "",
         *missed(hpa),
@@ -134,14 +155,14 @@ def build() -> str:
             "- Single-node kind demonstrates mechanisms (probes, restarts, rolling updates, autoscaling). "
             "The numbers do not describe production capacity."
         ),
-        "- The Locust process is single-threaded Python. At 200 users it can limit the offered rate before the API does.",
+        "- The Locust process is single-threaded Python. At 200 users it can limit the offered rate before the API does, mainly in the stress run.",
         (
             "- During the self-heal and rollout runs the HPA is removed so the replica count stays at 2. "
             "It is applied again for the scale-out run."
         ),
         (
-            "- Each user waits 0.05 to 0.15 s between requests (unchanged from the first round). "
-            "At 200 users this saturates the API pods and the shared CPU."
+            "- Think time per user: 0.5 to 1.5 s in the moderate scale-out profile, "
+            "0.05 to 0.15 s in the stress run and in the self-heal and rollout runs."
         ),
         "- The pods are given a 10 s `preStop` sleep and a 60 s termination grace period before the rolling update run.",
         "- Each run is a single execution. No repeat or confidence interval is reported.",
