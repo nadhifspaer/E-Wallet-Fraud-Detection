@@ -1,0 +1,2 @@
+NAME        REFERENCE              TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+fraud-api   Deployment/fraud-api   cpu: 1%/50%   2         6         2          12m

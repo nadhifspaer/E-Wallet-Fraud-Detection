@@ -2,6 +2,7 @@ data/*
 !data/sample/
 __pycache__/
 .venv/
+.venv-loadtest/
 .ipynb_checkpoints/
 .env
 airflow/logs/

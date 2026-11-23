@@ -1,0 +1,4 @@
+NAME                         READY   STATUS             RESTARTS   AGE
+fraud-api-669d85cfdf-bmcrp   1/1     Running            0          2m15s
+fraud-api-669d85cfdf-kxvdl   1/1     Running            0          2m15s
+fraud-api-c45b57d8d-sfftx    0/1     ImagePullBackOff   0          25s

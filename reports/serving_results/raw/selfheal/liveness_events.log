@@ -1,0 +1,9 @@
+REASON      MESSAGE
+Scheduled   Successfully assigned fraud/fraud-api-5555f8888d-nrdls to fraud-detection-tabular-control-plane
+Unhealthy   Startup probe failed: Get "http://10.244.0.6:8000/ready": dial tcp 10.244.0.6:8000: connect: connection refused
+Pulled      Container image "fraud-api:1.0.0" already present on machine and can be accessed by the pod
+Created     Container created
+Unhealthy   Liveness probe failed: HTTP probe failed with statuscode: 503
+Killing     Container api failed liveness probe, will be restarted
+Started     Container started
+Unhealthy   Readiness probe failed: Get "http://10.244.0.6:8000/ready": dial tcp 10.244.0.6:8000: connect: connection refused

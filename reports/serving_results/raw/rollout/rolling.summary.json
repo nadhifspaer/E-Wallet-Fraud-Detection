@@ -1,0 +1,9 @@
+{
+  "requests": 11453,
+  "failures": 0,
+  "rps": 96.2,
+  "p50_ms": 4.0,
+  "p95_ms": 6.0,
+  "p99_ms": 7.0,
+  "error_rate": 0.0
+}

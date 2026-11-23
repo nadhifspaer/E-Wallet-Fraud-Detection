@@ -1,0 +1,702 @@
+{
+  "experiment": "hpa",
+  "environment": {
+    "cpu_model": "AMD Ryzen 7 8845HS w/ Radeon 780M Graphics",
+    "cpu_threads": 12,
+    "ram_gb": 9.7,
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "kind": "kind v0.33.0 go1.26.7 linux/amd64",
+    "topology": "single-node kind, load generator on the same machine"
+  },
+  "load": {
+    "users_from": 10,
+    "users_to": 200,
+    "ramp_seconds": 120,
+    "hold_seconds": 240
+  },
+  "settle_wait_seconds": 10,
+  "start_replicas": 2,
+  "min_replicas": 2,
+  "max_replicas": 6,
+  "first_scale_up_seconds": 60,
+  "peak_replicas": 6,
+  "load_end_seconds": 422,
+  "scale_down_to_min_seconds_after_load": 350,
+  "p95_ms_by_phase": {
+    "before": 9.0,
+    "ramp": 160.0,
+    "hold_early": 210.0,
+    "hold_late": 210.0
+  },
+  "overall": {
+    "requests": 346667,
+    "failures": 0,
+    "rps": 823.7,
+    "p50_ms": 50.0,
+    "p95_ms": 200.0,
+    "p99_ms": 300.0,
+    "error_rate": 0.0
+  },
+  "series": [
+    {
+      "t": 0,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 5,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 11,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 16,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 22,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 27,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 33,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 16
+    },
+    {
+      "t": 38,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 16
+    },
+    {
+      "t": 43,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 16
+    },
+    {
+      "t": 49,
+      "current": 2,
+      "desired": 3,
+      "cpu_pct": 65
+    },
+    {
+      "t": 54,
+      "current": 2,
+      "desired": 3,
+      "cpu_pct": 65
+    },
+    {
+      "t": 60,
+      "current": 3,
+      "desired": 3,
+      "cpu_pct": 64
+    },
+    {
+      "t": 65,
+      "current": 3,
+      "desired": 3,
+      "cpu_pct": 64
+    },
+    {
+      "t": 71,
+      "current": 3,
+      "desired": 3,
+      "cpu_pct": 64
+    },
+    {
+      "t": 76,
+      "current": 3,
+      "desired": 3,
+      "cpu_pct": 64
+    },
+    {
+      "t": 82,
+      "current": 3,
+      "desired": 3,
+      "cpu_pct": 64
+    },
+    {
+      "t": 87,
+      "current": 3,
+      "desired": 3,
+      "cpu_pct": 64
+    },
+    {
+      "t": 93,
+      "current": 3,
+      "desired": 4,
+      "cpu_pct": 56
+    },
+    {
+      "t": 98,
+      "current": 3,
+      "desired": 4,
+      "cpu_pct": 56
+    },
+    {
+      "t": 104,
+      "current": 3,
+      "desired": 4,
+      "cpu_pct": 56
+    },
+    {
+      "t": 109,
+      "current": 4,
+      "desired": 6,
+      "cpu_pct": 108
+    },
+    {
+      "t": 115,
+      "current": 4,
+      "desired": 6,
+      "cpu_pct": 108
+    },
+    {
+      "t": 120,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 158
+    },
+    {
+      "t": 126,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 158
+    },
+    {
+      "t": 132,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 158
+    },
+    {
+      "t": 137,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 166
+    },
+    {
+      "t": 143,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 166
+    },
+    {
+      "t": 148,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 166
+    },
+    {
+      "t": 154,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 142
+    },
+    {
+      "t": 159,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 142
+    },
+    {
+      "t": 165,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 141
+    },
+    {
+      "t": 171,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 141
+    },
+    {
+      "t": 176,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 141
+    },
+    {
+      "t": 182,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 165
+    },
+    {
+      "t": 187,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 165
+    },
+    {
+      "t": 193,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 165
+    },
+    {
+      "t": 199,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 180
+    },
+    {
+      "t": 204,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 180
+    },
+    {
+      "t": 210,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 195
+    },
+    {
+      "t": 215,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 195
+    },
+    {
+      "t": 221,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 195
+    },
+    {
+      "t": 227,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 232,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 238,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 243,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 249,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 254,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 260,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 266,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 271,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 277,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 282,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 288,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 294,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 299,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 305,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 310,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 316,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 321,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 327,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 333,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 338,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 344,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 349,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 355,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 361,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 366,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 372,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 377,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 383,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 388,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 394,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 400,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 405,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 411,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 416,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 422,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 432,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 198
+    },
+    {
+      "t": 443,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 197
+    },
+    {
+      "t": 454,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 134
+    },
+    {
+      "t": 464,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 134
+    },
+    {
+      "t": 475,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 5
+    },
+    {
+      "t": 485,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 496,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 507,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 517,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 528,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 538,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 549,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 560,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 570,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 581,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 591,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 602,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 613,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 623,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 634,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 644,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 655,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 666,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 676,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 687,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 698,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 708,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 719,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 729,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 740,
+      "current": 6,
+      "desired": 6,
+      "cpu_pct": 1
+    },
+    {
+      "t": 751,
+      "current": 6,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 761,
+      "current": 6,
+      "desired": 2,
+      "cpu_pct": 1
+    },
+    {
+      "t": 772,
+      "current": 2,
+      "desired": 2,
+      "cpu_pct": 1
+    }
+  ]
+}

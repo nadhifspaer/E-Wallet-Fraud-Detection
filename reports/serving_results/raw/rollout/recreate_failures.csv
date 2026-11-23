@@ -1,0 +1,2 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,/predict,CatchResponseError('status 0'),83,2026-11-23T19:45:38Z,2026-11-23T19:45:58Z

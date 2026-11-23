@@ -1,0 +1,52 @@
+{
+  "experiment": "rollout",
+  "environment": {
+    "cpu_model": "AMD Ryzen 7 8845HS w/ Radeon 780M Graphics",
+    "cpu_threads": 12,
+    "ram_gb": 9.7,
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "kind": "kind v0.33.0 go1.26.7 linux/amd64",
+    "topology": "single-node kind, load generator on the same machine"
+  },
+  "load": {
+    "users": 10,
+    "seconds": 120,
+    "hpa": "removed for this experiment"
+  },
+  "phases": {
+    "rolling": {
+      "requests": 11453,
+      "failures": 0,
+      "rps": 96.2,
+      "p50_ms": 4.0,
+      "p95_ms": 6.0,
+      "p99_ms": 7.0,
+      "error_rate": 0.0,
+      "action_seconds": 9
+    },
+    "recreate": {
+      "requests": 9308,
+      "failures": 83,
+      "rps": 78.1,
+      "p50_ms": 4.0,
+      "p95_ms": 8.0,
+      "p99_ms": 11.0,
+      "error_rate": 0.008917,
+      "action_seconds": 16
+    },
+    "undo": {
+      "requests": 11257,
+      "failures": 0,
+      "rps": 94.5,
+      "p50_ms": 5.0,
+      "p95_ms": 8.0,
+      "p99_ms": 10.0,
+      "error_rate": 0.0,
+      "action_seconds": 26
+    }
+  },
+  "undo": {
+    "ready_pods_during_failed_rollout": 2,
+    "image_after_undo": "fraud-api:1.0.0"
+  }
+}

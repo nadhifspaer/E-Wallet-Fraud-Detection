@@ -1,0 +1,20 @@
+NAME                         READY   STATUS    RESTARTS   AGE   IP           NODE                                    NOMINATED NODE   READINESS GATES
+fraud-api-5555f8888d-7hxsl   1/1     Running   0          67s   10.244.0.7   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-nrdls   1/1     Running   0          67s   10.244.0.6   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-7hxsl   1/1     Terminating   0          88s   10.244.0.7   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     Pending       0          0s    <none>       <none>                                  <none>           <none>
+fraud-api-5555f8888d-7hxsl   1/1     Terminating   0          88s   10.244.0.7   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     Pending       0          0s    <none>       fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     ContainerCreating   0          0s    <none>       fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     ContainerCreating   0          0s    <none>       fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     Running             0          0s    10.244.0.9   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-7hxsl   0/1     Completed           0          89s   10.244.0.7   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-7hxsl   0/1     Completed           0          89s   10.244.0.7   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-7hxsl   0/1     Completed           0          89s   10.244.0.7   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     Running             0          2s    10.244.0.9   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   0/1     Running             0          4s    10.244.0.9   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-pfmh6   1/1     Running             0          4s    10.244.0.9   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-nrdls   0/1     Running             1 (1s ago)   111s   10.244.0.6   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-nrdls   0/1     Running             1 (2s ago)   112s   10.244.0.6   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-nrdls   0/1     Running             1 (4s ago)   114s   10.244.0.6   fraud-detection-tabular-control-plane   <none>           <none>
+fraud-api-5555f8888d-nrdls   1/1     Running             1 (4s ago)   114s   10.244.0.6   fraud-detection-tabular-control-plane   <none>           <none>

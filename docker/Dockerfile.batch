@@ -1,0 +1,20 @@
+# build stage, install dependencies into a virtual environment
+FROM python:3.11-slim AS build
+WORKDIR /build
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+COPY docker/requirements-batch.txt .
+RUN pip install --no-cache-dir -r requirements-batch.txt
+
+# runtime stage, non-root with the model baked in and data mounted at run time
+FROM python:3.11-slim
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --system --uid 1000 --no-create-home app
+COPY --from=build /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY src/__init__.py src/config.py src/feature_engineering.py src/score_pipeline.py src/batch_score.py src/
+COPY models/model.txt models/feature_list.json models/
+USER app
+CMD ["python", "-m", "src.batch_score", "0"]

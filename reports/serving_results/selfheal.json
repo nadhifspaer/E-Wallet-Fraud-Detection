@@ -1,0 +1,42 @@
+{
+  "experiment": "selfheal",
+  "environment": {
+    "cpu_model": "AMD Ryzen 7 8845HS w/ Radeon 780M Graphics",
+    "cpu_threads": 12,
+    "ram_gb": 9.7,
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "kind": "kind v0.33.0 go1.26.7 linux/amd64",
+    "topology": "single-node kind, load generator on the same machine"
+  },
+  "load": {
+    "users": 10,
+    "seconds": 150,
+    "hpa": "removed for this experiment"
+  },
+  "pod_delete": {
+    "victim": "fraud-api-5555f8888d-7hxsl",
+    "replacement_ready_seconds": 5.2
+  },
+  "liveness_failure": {
+    "pod": "fraud-api-5555f8888d-nrdls",
+    "restarts_before": 0,
+    "restarts_after": 1,
+    "ready_after_seconds": 10.9,
+    "events": [
+      "Unhealthy   Startup probe failed: Get \"http://10.244.0.6:8000/ready\": dial tcp 10.244.0.6:8000: connect: connection refused",
+      "Unhealthy   Liveness probe failed: HTTP probe failed with statuscode: 503",
+      "Killing     Container api failed liveness probe, will be restarted",
+      "Started     Container started",
+      "Unhealthy   Readiness probe failed: Get \"http://10.244.0.6:8000/ready\": dial tcp 10.244.0.6:8000: connect: connection refused"
+    ]
+  },
+  "locust": {
+    "requests": 14031,
+    "failures": 10,
+    "rps": 94.1,
+    "p50_ms": 5.0,
+    "p95_ms": 9.0,
+    "p99_ms": 12.0,
+    "error_rate": 0.000713
+  }
+}

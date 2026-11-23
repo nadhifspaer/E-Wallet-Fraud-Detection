@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fraud-batch-score
+  namespace: fraud
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: batch
+          image: fraud-batch:1.0.0
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "src.batch_score", "0"]
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+      volumes:
+        - name: data
+          hostPath:
+            path: /mnt/fraud-data
+            type: Directory

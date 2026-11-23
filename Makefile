@@ -32,3 +32,53 @@ up:
 down:
 	@test -f .env || cp .env.example .env
 	$(COMPOSE) down -v
+
+KIND_CLUSTER := fraud-detection-tabular
+KCTX := kind-$(KIND_CLUSTER)
+KUBECTL := kubectl --context $(KCTX)
+API_TAG := 1.0.0
+API_TAG_NEXT := 1.0.1
+BATCH_TAG := 1.0.0
+METRICS_SERVER := https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.8.0/components.yaml
+
+.PHONY: kind-up k8s-apply k8s-batch loadtest-env loadtest kind-down
+
+# create the kind cluster, install metrics-server, build and load the images
+kind-up:
+	kind create cluster --config k8s/kind-config.yaml
+	$(KUBECTL) apply -f $(METRICS_SERVER)
+	$(KUBECTL) -n kube-system patch deployment metrics-server --type=json \
+		-p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+	docker build -f docker/Dockerfile.api -t fraud-api:$(API_TAG) .
+	docker tag fraud-api:$(API_TAG) fraud-api:$(API_TAG_NEXT)
+	docker build -f docker/Dockerfile.batch -t fraud-batch:$(BATCH_TAG) .
+	kind load docker-image --name $(KIND_CLUSTER) fraud-api:$(API_TAG) fraud-api:$(API_TAG_NEXT) fraud-batch:$(BATCH_TAG)
+
+# apply the serving manifests and wait for the rollout
+k8s-apply:
+	$(KUBECTL) apply -f k8s/namespace.yaml
+	$(KUBECTL) apply -f k8s/configmap.yaml -f k8s/deployment.yaml -f k8s/service.yaml -f k8s/hpa.yaml -f k8s/pdb.yaml
+	$(KUBECTL) -n fraud rollout status deployment/fraud-api --timeout=180s
+
+# run the one-day batch scoring job
+k8s-batch:
+	$(KUBECTL) -n fraud delete job fraud-batch-score --ignore-not-found
+	$(KUBECTL) apply -f k8s/batch-score-job.yaml
+	$(KUBECTL) -n fraud wait --for=condition=complete job/fraud-batch-score --timeout=300s
+	$(KUBECTL) -n fraud logs job/fraud-batch-score
+
+# create the load test virtual environment
+loadtest-env:
+	python3.11 -m venv .venv-loadtest
+	.venv-loadtest/bin/python -m pip install -r loadtest/requirements.txt
+
+# run the three serving experiments and generate the report
+loadtest: loadtest-env
+	loadtest/exp_selfheal.sh
+	loadtest/exp_rollout.sh
+	loadtest/exp_hpa.sh
+	$(PY) loadtest/make_report.py
+
+# delete the kind cluster
+kind-down:
+	kind delete cluster --name $(KIND_CLUSTER)
