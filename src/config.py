@@ -7,11 +7,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "processed" / "transactions.parquet"
 META_PATH = ROOT / "data" / "processed" / "meta.json"
 
-_META = json.loads(META_PATH.read_text())
-
-MAX_STEP = int(_META["max_step"])
-CUTOFF_STEP = math.floor(0.8 * MAX_STEP)
-N_DAYS = math.ceil(MAX_STEP / 24)
 ANCHOR_DATE = date(2026, 1, 1)
 
 TYPES = ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"]
@@ -60,6 +55,22 @@ METRICS_PATH = REPORTS_DIR / "metrics.json"
 ABLATION_PATH = REPORTS_DIR / "ablation.json"
 ABLATION_FIG_PATH = REPORTS_DIR / "figures" / "ablation_pr_auc.png"
 EVAL_POPULATIONS = {"transfer_cash_out": ("TRANSFER", "CASH_OUT"), "all_rows": None}
+
+
+def _max_step() -> int:
+    """Read max_step from the processed metadata."""
+    return int(json.loads(META_PATH.read_text())["max_step"])
+
+
+def __getattr__(name: str) -> int:
+    """Resolve step-derived constants lazily from the metadata file."""
+    if name == "MAX_STEP":
+        return _max_step()
+    if name == "CUTOFF_STEP":
+        return math.floor(0.8 * _max_step())
+    if name == "N_DAYS":
+        return math.ceil(_max_step() / 24)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def k_values(n_test_rows: int, n_test_fraud: int) -> list[int]:

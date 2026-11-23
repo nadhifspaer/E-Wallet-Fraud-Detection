@@ -1,0 +1,22 @@
+# build stage, install dependencies into a virtual environment
+FROM python:3.11-slim AS build
+WORKDIR /build
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+COPY docker/requirements-api.txt .
+RUN pip install --no-cache-dir -r requirements-api.txt
+
+# runtime stage, non-root with the model baked in
+FROM python:3.11-slim
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --system --uid 10001 --no-create-home app
+COPY --from=build /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY src/__init__.py src/config.py src/score_pipeline.py src/
+COPY api/ api/
+COPY models/model.txt models/feature_list.json models/
+USER app
+EXPOSE 8000
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--timeout-graceful-shutdown", "30"]
