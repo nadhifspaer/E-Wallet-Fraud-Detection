@@ -2,7 +2,7 @@ PY := .venv/bin/python
 
 .PHONY: setup check train ablation up down
 
-COMPOSE := docker compose -f docker/docker-compose.yml
+COMPOSE := docker compose --env-file .env -f docker/docker-compose.yml
 
 # create the virtual environment and install dependencies
 setup:
@@ -25,8 +25,10 @@ ablation:
 
 # build and start the streaming stack
 up:
+	@test -f .env || cp .env.example .env
 	$(COMPOSE) up -d --build
 
 # stop the streaming stack and remove its volumes
 down:
+	@test -f .env || cp .env.example .env
 	$(COMPOSE) down -v
