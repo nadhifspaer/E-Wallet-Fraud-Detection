@@ -50,3 +50,49 @@ def test_out_of_range_day():
 def test_explain_shape():
     rows = batch_score.extract_window(0).head(50)
     assert explain(build_features(rows)).shape == (50, 10)
+
+
+@pytest.fixture(scope="module")
+def day0_scores():
+    return score_day(0)
+
+
+def _check(df, tmp_path, monkeypatch):
+    monkeypatch.setattr(batch_score, "SCORED_DIR", tmp_path)
+    write_partition(df, 0)
+    return batch_score.quality_check(0)
+
+
+def test_quality_check_passes(day0_scores, tmp_path, monkeypatch):
+    stats = _check(day0_scores, tmp_path, monkeypatch)
+    assert stats["rows"] == stats["expected_rows"] == len(day0_scores)
+    assert stats["score_std"] > 0
+
+
+def test_quality_check_wrong_row_count(day0_scores, tmp_path, monkeypatch):
+    with pytest.raises(ValueError, match="row count"):
+        _check(day0_scores.iloc[:-1], tmp_path, monkeypatch)
+
+
+@pytest.mark.parametrize("column", ["txn_id", "step", "score"])
+def test_quality_check_null(day0_scores, column, tmp_path, monkeypatch):
+    df = day0_scores.copy()
+    df[column] = df[column].astype("float64")
+    df.loc[df.index[0], column] = np.nan
+    with pytest.raises(ValueError, match="nulls"):
+        _check(df, tmp_path, monkeypatch)
+
+
+@pytest.mark.parametrize("bad", [-0.1, 1.1])
+def test_quality_check_score_out_of_range(day0_scores, bad, tmp_path, monkeypatch):
+    df = day0_scores.copy()
+    df.loc[df.index[0], "score"] = bad
+    with pytest.raises(ValueError, match=r"\[0, 1\]"):
+        _check(df, tmp_path, monkeypatch)
+
+
+def test_quality_check_constant_score(day0_scores, tmp_path, monkeypatch):
+    df = day0_scores.copy()
+    df["score"] = 0.5
+    with pytest.raises(ValueError, match="standard deviation"):
+        _check(df, tmp_path, monkeypatch)
