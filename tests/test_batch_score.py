@@ -2,16 +2,17 @@ import numpy as np
 import pyarrow.dataset as ds
 import pytest
 
-from src import batch_score
+from src import batch_score, config
 from src.batch_score import score_day, window_bounds, write_partition
-from src.config import DATA_PATH, MAX_STEP, N_DAYS
 from src.explainability import explain
 from src.feature_engineering import build_features
 from src.score_pipeline import score
 
+pytestmark = pytest.mark.needs_data
+
 
 def _count(start: int, end: int) -> int:
-    d = ds.dataset(DATA_PATH)
+    d = ds.dataset(config.DATA_PATH)
     return d.count_rows(filter=(ds.field("step") >= start) & (ds.field("step") <= end))
 
 
@@ -38,13 +39,13 @@ def test_partition_rewrite_keeps_row_count(tmp_path, monkeypatch):
 
 
 def test_last_day_window():
-    assert window_bounds(N_DAYS - 1) == (24 * (N_DAYS - 1) + 1, MAX_STEP)
-    assert window_bounds(N_DAYS - 1) == (721, 743)
+    assert window_bounds(config.N_DAYS - 1) == (24 * (config.N_DAYS - 1) + 1, config.MAX_STEP)
+    assert window_bounds(config.N_DAYS - 1) == (721, 743)
 
 
 def test_out_of_range_day():
     with pytest.raises(ValueError):
-        window_bounds(N_DAYS)
+        window_bounds(config.N_DAYS)
 
 
 def test_explain_shape():

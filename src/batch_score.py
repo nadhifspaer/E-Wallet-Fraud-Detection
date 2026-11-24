@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 import pyarrow.dataset as ds
 
-from src.config import ANCHOR_DATE, DATA_PATH, MAX_STEP, N_DAYS, ROOT
+from src import config
+from src.config import ANCHOR_DATE, DATA_PATH, ROOT
 from src.feature_engineering import build_features
 from src.score_pipeline import score
 
@@ -14,9 +15,9 @@ SCORED_DIR = ROOT / "data" / "scored"
 
 def window_bounds(day_index: int) -> tuple[int, int]:
     """Return the first and last step of a day window."""
-    if not 0 <= day_index < N_DAYS:
-        raise ValueError(f"day_index must be in [0, {N_DAYS - 1}]")
-    return 24 * day_index + 1, min(24 * day_index + 24, MAX_STEP)
+    if not 0 <= day_index < config.N_DAYS:
+        raise ValueError(f"day_index must be in [0, {config.N_DAYS - 1}]")
+    return 24 * day_index + 1, min(24 * day_index + 24, config.MAX_STEP)
 
 
 def extract_window(day_index: int) -> pd.DataFrame:

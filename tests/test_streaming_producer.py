@@ -28,7 +28,7 @@ def parquet_path(tmp_path, monkeypatch):
     path = tmp_path / "transactions.parquet"
     df.to_parquet(path, row_group_size=4, index=False)
     monkeypatch.setattr(config, "DATA_PATH", path)
-    monkeypatch.setattr(config, "CUTOFF_STEP", CUTOFF, raising=False)
+    monkeypatch.setitem(vars(config), "CUTOFF_STEP", CUTOFF)
     return df
 
 
@@ -58,5 +58,5 @@ def test_max_rows_limits_count(parquet_path):
 
 
 def test_empty_range_returns_no_rows(parquet_path, monkeypatch):
-    monkeypatch.setattr(config, "CUTOFF_STEP", 1000, raising=False)
+    monkeypatch.setitem(vars(config), "CUTOFF_STEP", 1000)
     assert producer.load_replay_rows(None) == []

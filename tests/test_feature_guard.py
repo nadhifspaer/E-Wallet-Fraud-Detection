@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
+import pytest
 
-from src.config import CUTOFF_STEP, EXCLUDED_FEATURES, FEATURE_LIST
+from src import config
+from src.config import EXCLUDED_FEATURES, FEATURE_LIST
 from src.feature_engineering import build_features, temporal_split
 
 
@@ -28,10 +30,11 @@ def test_orig_drain_ratio_exact_drain_and_missing():
     assert np.isnan(feats["orig_drain_ratio"].iloc[1])
 
 
+@pytest.mark.needs_data
 def test_temporal_split_has_no_step_overlap():
     steps = np.arange(1, 744)
     df = _frame([(s, "PAYMENT", 1.0, 1.0, 0.0) for s in steps])
     train, test = temporal_split(df)
-    assert train["step"].max() <= CUTOFF_STEP < test["step"].min()
+    assert train["step"].max() <= config.CUTOFF_STEP < test["step"].min()
     assert not set(train["step"]) & set(test["step"])
     assert len(train) + len(test) == len(df)
