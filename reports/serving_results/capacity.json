@@ -1,0 +1,447 @@
+{
+  "environment": {
+    "cpu_model": "AMD Ryzen 7 8845HS w/ Radeon 780M Graphics",
+    "cpu_threads": 12,
+    "ram_gb": 9.7,
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "kind": "kind v0.33.0 go1.26.7 linux/amd64",
+    "topology": "single-node kind, load generator on the same machine"
+  },
+  "generator": {
+    "user_class": "FastHttpUser",
+    "per_user_rps": 2.0,
+    "connection": "new connection per request",
+    "processes": 1,
+    "step_seconds": 20,
+    "max_process_cpu_pct": 24.4,
+    "below_80_pct": true
+  },
+  "pod_cpu_patch": null,
+  "hpa": "removed during calibration",
+  "configs": {
+    "1": {
+      "replicas": 1,
+      "baseline_p95_ms": 56.0,
+      "knee_step_index": 8,
+      "knee_users": 90,
+      "knee_offered_rps": 180.0,
+      "knee_measured_rps": 176.4,
+      "max_measured_rps": 176.4,
+      "cpu_ms_per_request_median": null,
+      "locust_cpu_max_pct": 13.8,
+      "steps": [
+        {
+          "users": 10,
+          "offered_rps": 20.0,
+          "rps": 20.0,
+          "p95_ms": 91.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 20,
+          "offered_rps": 40.0,
+          "rps": 40.0,
+          "p95_ms": 27.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 30,
+          "offered_rps": 60.0,
+          "rps": 60.0,
+          "p95_ms": 56.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 40,
+          "offered_rps": 80.0,
+          "rps": 80.0,
+          "p95_ms": 58.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 50,
+          "offered_rps": 100.0,
+          "rps": 100.0,
+          "p95_ms": 140.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 60,
+          "offered_rps": 120.0,
+          "rps": 120.0,
+          "p95_ms": 120.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 70,
+          "offered_rps": 140.0,
+          "rps": 139.8,
+          "p95_ms": 170.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 80,
+          "offered_rps": 160.0,
+          "rps": 159.6,
+          "p95_ms": 160.0,
+          "failures": 0,
+          "pod_cpu_cores": null,
+          "cpu_ms_per_request": null,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": null
+        },
+        {
+          "users": 90,
+          "offered_rps": 180.0,
+          "rps": 176.4,
+          "p95_ms": 345.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.416,
+          "cpu_ms_per_request": 1.444,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": 12.2
+        },
+        {
+          "users": 100,
+          "offered_rps": 200.0,
+          "rps": 172.9,
+          "p95_ms": 620.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.501,
+          "cpu_ms_per_request": 1.596,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": 13.6
+        },
+        {
+          "users": 110,
+          "offered_rps": 220.0,
+          "rps": 173.2,
+          "p95_ms": 705.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.501,
+          "cpu_ms_per_request": 1.64,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": 13.8
+        },
+        {
+          "users": 120,
+          "offered_rps": 240.0,
+          "rps": 173.2,
+          "p95_ms": 790.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.5,
+          "cpu_ms_per_request": 1.622,
+          "min_pod_cpu_share": null,
+          "locust_cpu_max_pct": 13.6
+        }
+      ]
+    },
+    "2": {
+      "replicas": 2,
+      "baseline_p95_ms": 20.0,
+      "knee_step_index": 8,
+      "knee_users": 90,
+      "knee_offered_rps": 180.0,
+      "knee_measured_rps": 180.0,
+      "max_measured_rps": 333.2,
+      "cpu_ms_per_request_median": 1.567,
+      "locust_cpu_max_pct": 24.4,
+      "steps": [
+        {
+          "users": 10,
+          "offered_rps": 20.0,
+          "rps": 20.0,
+          "p95_ms": 20.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.071,
+          "cpu_ms_per_request": 1.864,
+          "min_pod_cpu_share": 0.488,
+          "locust_cpu_max_pct": 1.6
+        },
+        {
+          "users": 20,
+          "offered_rps": 40.0,
+          "rps": 40.0,
+          "p95_ms": 22.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.123,
+          "cpu_ms_per_request": 1.693,
+          "min_pod_cpu_share": 0.472,
+          "locust_cpu_max_pct": 2.8
+        },
+        {
+          "users": 30,
+          "offered_rps": 60.0,
+          "rps": 60.0,
+          "p95_ms": 20.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.168,
+          "cpu_ms_per_request": 1.553,
+          "min_pod_cpu_share": 0.472,
+          "locust_cpu_max_pct": 4.2
+        },
+        {
+          "users": 40,
+          "offered_rps": 80.0,
+          "rps": 80.0,
+          "p95_ms": 33.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.229,
+          "cpu_ms_per_request": 1.567,
+          "min_pod_cpu_share": 0.488,
+          "locust_cpu_max_pct": 5.6
+        },
+        {
+          "users": 50,
+          "offered_rps": 100.0,
+          "rps": 100.0,
+          "p95_ms": 36.5,
+          "failures": 0,
+          "pod_cpu_cores": 0.275,
+          "cpu_ms_per_request": 1.526,
+          "min_pod_cpu_share": 0.5,
+          "locust_cpu_max_pct": 7.2
+        },
+        {
+          "users": 60,
+          "offered_rps": 120.0,
+          "rps": 120.0,
+          "p95_ms": 38.5,
+          "failures": 0,
+          "pod_cpu_cores": 0.336,
+          "cpu_ms_per_request": 1.548,
+          "min_pod_cpu_share": 0.496,
+          "locust_cpu_max_pct": 8.0
+        },
+        {
+          "users": 70,
+          "offered_rps": 140.0,
+          "rps": 140.0,
+          "p95_ms": 51.5,
+          "failures": 0,
+          "pod_cpu_cores": 0.371,
+          "cpu_ms_per_request": 1.475,
+          "min_pod_cpu_share": 0.5,
+          "locust_cpu_max_pct": 9.0
+        },
+        {
+          "users": 80,
+          "offered_rps": 160.0,
+          "rps": 160.0,
+          "p95_ms": 51.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.42,
+          "cpu_ms_per_request": 1.468,
+          "min_pod_cpu_share": 0.481,
+          "locust_cpu_max_pct": 10.4
+        },
+        {
+          "users": 90,
+          "offered_rps": 180.0,
+          "rps": 180.0,
+          "p95_ms": 110.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.475,
+          "cpu_ms_per_request": 1.449,
+          "min_pod_cpu_share": 0.464,
+          "locust_cpu_max_pct": 11.8
+        },
+        {
+          "users": 100,
+          "offered_rps": 200.0,
+          "rps": 193.2,
+          "p95_ms": 790.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.559,
+          "cpu_ms_per_request": 1.603,
+          "min_pod_cpu_share": 0.497,
+          "locust_cpu_max_pct": 15.0
+        },
+        {
+          "users": 110,
+          "offered_rps": 220.0,
+          "rps": 209.1,
+          "p95_ms": 441.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.608,
+          "cpu_ms_per_request": 1.537,
+          "min_pod_cpu_share": 0.487,
+          "locust_cpu_max_pct": 16.4
+        },
+        {
+          "users": 120,
+          "offered_rps": 240.0,
+          "rps": 239.8,
+          "p95_ms": 28.5,
+          "failures": 0,
+          "pod_cpu_cores": 0.691,
+          "cpu_ms_per_request": 1.595,
+          "min_pod_cpu_share": 0.484,
+          "locust_cpu_max_pct": 18.6
+        },
+        {
+          "users": 130,
+          "offered_rps": 260.0,
+          "rps": 235.2,
+          "p95_ms": 980.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.71,
+          "cpu_ms_per_request": 1.616,
+          "min_pod_cpu_share": 0.467,
+          "locust_cpu_max_pct": 19.4
+        },
+        {
+          "users": 140,
+          "offered_rps": 280.0,
+          "rps": 265.1,
+          "p95_ms": 985.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.572,
+          "cpu_ms_per_request": 1.319,
+          "min_pod_cpu_share": 0.488,
+          "locust_cpu_max_pct": 15.4
+        },
+        {
+          "users": 150,
+          "offered_rps": 300.0,
+          "rps": 268.6,
+          "p95_ms": 965.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.803,
+          "cpu_ms_per_request": 1.511,
+          "min_pod_cpu_share": 0.468,
+          "locust_cpu_max_pct": 21.0
+        },
+        {
+          "users": 160,
+          "offered_rps": 320.0,
+          "rps": 310.1,
+          "p95_ms": 665.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.847,
+          "cpu_ms_per_request": 1.573,
+          "min_pod_cpu_share": 0.497,
+          "locust_cpu_max_pct": 23.4
+        },
+        {
+          "users": 170,
+          "offered_rps": 340.0,
+          "rps": 263.7,
+          "p95_ms": 2000.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.858,
+          "cpu_ms_per_request": 1.571,
+          "min_pod_cpu_share": 0.48,
+          "locust_cpu_max_pct": 24.0
+        },
+        {
+          "users": 180,
+          "offered_rps": 360.0,
+          "rps": 333.2,
+          "p95_ms": 690.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.915,
+          "cpu_ms_per_request": 1.6,
+          "min_pod_cpu_share": 0.454,
+          "locust_cpu_max_pct": 22.8
+        },
+        {
+          "users": 190,
+          "offered_rps": 380.0,
+          "rps": 281.8,
+          "p95_ms": 1500.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.948,
+          "cpu_ms_per_request": 1.696,
+          "min_pod_cpu_share": 0.475,
+          "locust_cpu_max_pct": 23.2
+        },
+        {
+          "users": 200,
+          "offered_rps": 400.0,
+          "rps": 310.6,
+          "p95_ms": 860.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.889,
+          "cpu_ms_per_request": 1.59,
+          "min_pod_cpu_share": 0.437,
+          "locust_cpu_max_pct": 22.6
+        },
+        {
+          "users": 210,
+          "offered_rps": 420.0,
+          "rps": 315.5,
+          "p95_ms": 1000.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.826,
+          "cpu_ms_per_request": 1.522,
+          "min_pod_cpu_share": 0.414,
+          "locust_cpu_max_pct": 21.8
+        },
+        {
+          "users": 220,
+          "offered_rps": 440.0,
+          "rps": 322.4,
+          "p95_ms": 980.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.907,
+          "cpu_ms_per_request": 1.653,
+          "min_pod_cpu_share": 0.454,
+          "locust_cpu_max_pct": 22.4
+        },
+        {
+          "users": 230,
+          "offered_rps": 460.0,
+          "rps": 324.4,
+          "p95_ms": 1000.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.976,
+          "cpu_ms_per_request": 1.627,
+          "min_pod_cpu_share": 0.491,
+          "locust_cpu_max_pct": 24.4
+        },
+        {
+          "users": 240,
+          "offered_rps": 480.0,
+          "rps": 313.9,
+          "p95_ms": 1100.0,
+          "failures": 0,
+          "pod_cpu_cores": 0.967,
+          "cpu_ms_per_request": 1.638,
+          "min_pod_cpu_share": 0.479,
+          "locust_cpu_max_pct": 24.0
+        }
+      ]
+    }
+  },
+  "step_users": 90,
+  "step_offered_rps": 180.0
+}

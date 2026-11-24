@@ -2,10 +2,24 @@
 source "$(dirname "$0")/common.sh"
 
 PROFILE="${1:-moderate}"
+LOCUST_CLASS=""
+LOCUST_FILES="$ROOT/loadtest/locustfile.py,$ROOT/loadtest/ramp_shape.py"
+CPU_REQUEST_M=250
+PATCH_REQUEST=""
+PATCH_LIMIT=""
 case "$PROFILE" in
   moderate) export THINK_MIN=0.5 THINK_MAX=1.5 OUT_NAME=hpa ;;
   stress) export THINK_MIN=0.05 THINK_MAX=0.15 OUT_NAME=hpa_stress ;;
-  *) echo "usage: exp_hpa.sh [moderate|stress]" >&2; exit 2 ;;
+  step)
+    export OUT_NAME=hpa_step PER_USER_RPS=2 BASE_USERS=15 BASE_SECONDS=90 STEP_SECONDS=300 TAIL_SECONDS=120
+    STEP_USERS="$(python3 -c "import json; print(json.load(open('$OUT/capacity.json'))['step_users'])")"
+    export STEP_USERS
+    PATCH_REQUEST="$(python3 -c "import json; p=json.load(open('$OUT/capacity.json'))['pod_cpu_patch']; print(p['request'] if p else '')")"
+    PATCH_LIMIT="$(python3 -c "import json; p=json.load(open('$OUT/capacity.json'))['pod_cpu_patch']; print(p['limit'] if p else '')")"
+    LOCUST_FILES="$ROOT/loadtest/locustfile_fast.py,$ROOT/loadtest/step_shape.py"
+    LOCUST_CLASS="FastScoringUser"
+    ;;
+  *) echo "usage: exp_hpa.sh [moderate|stress|step]" >&2; exit 2 ;;
 esac
 RAW="$OUT/raw/$OUT_NAME"
 mkdir -p "$RAW"
@@ -13,8 +27,15 @@ SCALE_DOWN_WAIT=720
 
 reset_state no_hpa
 
+# apply the per-run CPU patch, reverted at the end by re-applying the manifest
+if [ -n "$PATCH_REQUEST" ]; then
+  KN patch deployment fraud-api --type=json -p "[{\"op\":\"replace\",\"path\":\"/spec/template/spec/containers/0/resources/requests/cpu\",\"value\":\"$PATCH_REQUEST\"},{\"op\":\"replace\",\"path\":\"/spec/template/spec/containers/0/resources/limits/cpu\",\"value\":\"$PATCH_LIMIT\"}]"
+  KN rollout status deployment/fraud-api --timeout=180s
+  wait_stable 2
+  CPU_REQUEST_M="${PATCH_REQUEST%m}"
+fi
+
 # wait for 2 replicas and 3 consecutive CPU readings below the HPA target
-CPU_REQUEST_M=250
 TARGET_PCT=50
 SETTLE_START="$(date +%s)"
 ok=0
@@ -35,6 +56,7 @@ done
 [ "$(pod_count)" -eq 2 ] || { echo "not at 2 replicas before ramp" >&2; exit 1; }
 
 : >"$RAW/samples.tsv"
+: >"$RAW/ready.tsv"
 sample() {
   local ts reps cpu top
   ts="$(date +%s)"
@@ -44,9 +66,20 @@ sample() {
   printf '%s\t%s\t%s\t%s\n' "$ts" "$reps" "${cpu:-NA}" "$top" | tee -a "$RAW/samples.tsv"
 }
 
+# one-second ready and total pod counts
+poll_ready() {
+  while true; do
+    printf '%s\t%s\t%s\n' "$(date +%s.%N)" "$(ready_count)" "$(pod_count)" >>"$RAW/ready.tsv"
+    sleep 1
+  done
+}
+poll_ready &
+POLL_PID=$!
+trap 'kill $POLL_PID 2>/dev/null || true' EXIT
+
 T0="$(date +%s)"
-"$LOCUST" -f "$ROOT/loadtest/locustfile.py,$ROOT/loadtest/ramp_shape.py" --headless \
-  --host "$HOST" --csv "$RAW/load" --csv-full-history --only-summary >"$RAW/load.log" 2>&1 &
+"$LOCUST" -f "$LOCUST_FILES" --headless \
+  --host "$HOST" --csv "$RAW/load" --csv-full-history --only-summary $LOCUST_CLASS >"$RAW/load.log" 2>&1 &
 LOAD_PID=$!
 
 while kill -0 "$LOAD_PID" 2>/dev/null; do
@@ -66,6 +99,15 @@ for _ in $(seq 1 $((SCALE_DOWN_WAIT / 10))); do
   sleep 10
 done
 KN get hpa fraud-api | tee "$RAW/hpa_final.log"
+kill "$POLL_PID" 2>/dev/null || true
 
+if [ -n "$PATCH_REQUEST" ]; then
+  KN apply -f "$ROOT/k8s/deployment.yaml"
+  KN rollout status deployment/fraud-api --timeout=180s
+fi
+
+RESULT="result_hpa.py"
+if [ "$PROFILE" = "step" ]; then RESULT="result_step.py"; fi
 ENV_JSON="$(env_json)" RAW="$RAW" OUT="$OUT" T0="$T0" T_END="$T_END" T_DOWN="$T_DOWN" SETTLE_SECONDS="$SETTLE_SECONDS" \
-  python3 "$ROOT/loadtest/result_hpa.py"
+  PATCH_REQUEST="$PATCH_REQUEST" PATCH_LIMIT="$PATCH_LIMIT" \
+  python3 "$ROOT/loadtest/$RESULT"

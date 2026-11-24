@@ -1,0 +1,55 @@
+[2026-11-24 04:03:32,800] LAPTOP-PDCU1K96/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-24 04:03:32,803] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test starting.
+[2026-11-24 04:03:32,805] LAPTOP-PDCU1K96/INFO/locust.runners: Shape worker starting
+[2026-11-24 04:03:32,805] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 10 users at 50.00 spawn rate
+[2026-11-24 04:03:32,805] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 10 users at a rate of 50.00 per second
+[2026-11-24 04:03:32,806] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 10} (10 total users)
+[2026-11-24 04:03:52,825] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 20 users at 50.00 spawn rate
+[2026-11-24 04:03:52,825] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 20 users at a rate of 50.00 per second
+[2026-11-24 04:03:52,826] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 20} (20 total users)
+[2026-11-24 04:04:12,844] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 30 users at 50.00 spawn rate
+[2026-11-24 04:04:12,844] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 30 users at a rate of 50.00 per second
+[2026-11-24 04:04:12,845] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 30} (30 total users)
+[2026-11-24 04:04:32,869] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 40 users at 50.00 spawn rate
+[2026-11-24 04:04:32,869] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 40 users at a rate of 50.00 per second
+[2026-11-24 04:04:32,869] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 40} (40 total users)
+[2026-11-24 04:04:52,893] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 50 users at 50.00 spawn rate
+[2026-11-24 04:04:52,893] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 50 users at a rate of 50.00 per second
+[2026-11-24 04:04:52,895] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 50} (50 total users)
+[2026-11-24 04:05:12,917] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 60 users at 50.00 spawn rate
+[2026-11-24 04:05:12,917] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 60 users at a rate of 50.00 per second
+[2026-11-24 04:05:12,917] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 60} (60 total users)
+[2026-11-24 04:05:32,943] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 70 users at 50.00 spawn rate
+[2026-11-24 04:05:32,943] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 70 users at a rate of 50.00 per second
+[2026-11-24 04:05:32,944] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 70} (70 total users)
+[2026-11-24 04:05:52,976] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 80 users at 50.00 spawn rate
+[2026-11-24 04:05:52,977] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 80 users at a rate of 50.00 per second
+[2026-11-24 04:05:52,977] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 80} (80 total users)
+[2026-11-24 04:06:12,999] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 90 users at 50.00 spawn rate
+[2026-11-24 04:06:12,999] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 90 users at a rate of 50.00 per second
+[2026-11-24 04:06:12,999] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 90} (90 total users)
+[2026-11-24 04:06:33,026] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 100 users at 50.00 spawn rate
+[2026-11-24 04:06:33,027] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 100 users at a rate of 50.00 per second
+[2026-11-24 04:06:33,027] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 100} (100 total users)
+[2026-11-24 04:06:53,070] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 110 users at 50.00 spawn rate
+[2026-11-24 04:06:53,070] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 110 users at a rate of 50.00 per second
+[2026-11-24 04:06:53,071] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 110} (110 total users)
+[2026-11-24 04:07:13,092] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test updating to 120 users at 50.00 spawn rate
+[2026-11-24 04:07:13,093] LAPTOP-PDCU1K96/INFO/locust.runners: Ramping to 120 users at a rate of 50.00 per second
+[2026-11-24 04:07:13,093] LAPTOP-PDCU1K96/INFO/locust.runners: All users spawned: {"FastScoringUser": 120} (120 total users)
+[2026-11-24 04:07:33,113] LAPTOP-PDCU1K96/INFO/locust.runners: Shape test stopping
+[2026-11-24 04:07:33,158] LAPTOP-PDCU1K96/INFO/locust.main: Shape test completed, shutting down
+[2026-11-24 04:07:33,158] LAPTOP-PDCU1K96/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                       28244     0(0.00%) |    285       5    1293    110 |  117.53        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                     28244     0(0.00%) |    285       5    1293    110 |  117.53        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              110    530    600    610    690    700    720    790   1200   1300   1300  28244
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            110    530    600    610    690    700    720    790   1200   1300   1300  28244
+
