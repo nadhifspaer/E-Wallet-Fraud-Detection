@@ -1,0 +1,5 @@
+pandas
+pyarrow
+numpy
+lightgbm==4.7.0
+pytest

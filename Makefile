@@ -82,3 +82,24 @@ loadtest: loadtest-env
 # delete the kind cluster
 kind-down:
 	kind delete cluster --name $(KIND_CLUSTER)
+
+AIRFLOW_COMPOSE := docker compose --env-file .env -f docker/docker-compose.airflow.yml
+
+.PHONY: airflow-up airflow-down airflow-test
+
+# prepare .env and start the Airflow stack
+airflow-up:
+	airflow/prepare_env.sh
+	$(AIRFLOW_COMPOSE) up -d --build
+
+# stop the Airflow stack and remove its volumes
+airflow-down:
+	airflow/prepare_env.sh
+	$(AIRFLOW_COMPOSE) down -v
+
+# run the DAG tests inside the Airflow image
+airflow-test:
+	airflow/prepare_env.sh
+	$(AIRFLOW_COMPOSE) build scheduler
+	$(AIRFLOW_COMPOSE) run --rm --no-deps --entrypoint python \
+		-v $(CURDIR)/tests:/opt/project/tests:ro scheduler -m pytest -q -p no:cacheprovider /opt/project/tests/test_dag.py
