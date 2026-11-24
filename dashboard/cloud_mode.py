@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 
+from dashboard.score_format import format_score_six_decimals
 from src.config import FEATURE_LIST, SAMPLE_PATH
 from src.explainability import explain
 from src.score_pipeline import score
@@ -28,7 +29,7 @@ def render() -> None:
     value = float(score(features)[0])
     left, right = st.columns(2)
     with left:
-        st.metric("Score", f"{value:.4f}")
+        st.metric("Score", format_score_six_decimals(value))
         st.caption("Model output, not a calibrated probability.")
         st.write(f"True label: {LABELS[int(row['isFraud'])]}")
         st.dataframe(features.T.rename(columns={features.index[0]: "value"}))

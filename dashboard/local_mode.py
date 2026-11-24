@@ -5,6 +5,8 @@ from datetime import UTC, datetime, timedelta
 import pandas as pd
 import streamlit as st
 
+from dashboard.score_format import format_score_six_decimals
+
 REFRESH_SECONDS = 2
 RATE_WINDOW_SECONDS = 10
 FEED_ROWS = 50
@@ -47,7 +49,8 @@ def live_feed() -> None:
     left, right = st.columns(2)
     left.metric("Total rows", total)
     right.metric(f"Rows per second (last {RATE_WINDOW_SECONDS} s)", f"{recent / RATE_WINDOW_SECONDS:.1f}")
-    st.dataframe(feed, hide_index=True, use_container_width=True)
+    shown = feed.assign(score=feed["score"].map(format_score_six_decimals))
+    st.dataframe(shown, hide_index=True, use_container_width=True)
     st.caption("Score is the model output, not a calibrated probability.")
 
 
