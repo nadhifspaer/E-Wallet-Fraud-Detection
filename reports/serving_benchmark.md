@@ -1,180 +1,207 @@
 # Serving Benchmark
 
-Measured behavior of the scoring API on a local single-node kind cluster. Every number below is read from `reports/serving_results/*.json`.
+This report shows how the scoring API behaves on a local single-node kind cluster. Every number is read from `reports/serving_results/*.json`.
+
+**How to read the results**
+
+- **Replica:** one running copy of the API.
+- **Autoscaling (HPA):** Kubernetes adds or removes replicas based on CPU use.
+- **RPS:** requests per second.
+- **p50, p95, p99:** response times. For p95, 95 of 100 requests were faster than this value.
+- **Rolling update:** a new version is started step by step while the old one keeps serving.
+- **Recreate:** the old version is stopped first, then the new one starts. It is used here as a comparison.
 
 ## Environment
 
-- CPU: AMD Ryzen 7 8845HS w/ Radeon 780M Graphics (12 threads visible to WSL2)
-- RAM visible to WSL2: 9.7 GB
-- Kernel: 6.18.33.2-microsoft-standard-WSL2
-- Cluster: kind v0.33.0 go1.26.7 linux/amd64, one control-plane node, metrics-server with insecure kubelet TLS
-- Workload: 2 to 6 API replicas, one uvicorn worker each, LightGBM with `n_jobs=1`
-- Requests: 250m CPU, 256Mi memory. Limits: 500m CPU, 512Mi memory
-- Rolling update settings: maxUnavailable 0, maxSurge 1, a 10 s `preStop` sleep, 60 s termination grace period
-- Load generator: Locust, headless, on the same machine as the cluster
+- **CPU:** AMD Ryzen 7 8845HS (12 threads visible to WSL2).
+- **Memory:** 9.7 GB visible to WSL2.
+- **Kernel:** 6.18.33.2-microsoft-standard-WSL2.
+- **Cluster:** kind v0.33.0, one control-plane node, metrics-server with insecure kubelet TLS.
+- **API:** 2 to 6 replicas, one uvicorn worker each, LightGBM with `n_jobs=1`.
+- **Resources per replica:** request 250m CPU and 256Mi memory, limit 500m CPU and 512Mi memory.
+- **Rolling update settings:** `maxUnavailable` 0, `maxSurge` 1, 10 s `preStop` sleep, 60 s grace period.
+- **Load generator:** Locust, headless, on the same machine as the cluster.
 
 ## Results
 
-Targets are proposals fixed before the runs. Latency values are measurements, with no latency target.
+The targets were set before the runs. Response times are measurements only, with no target.
 
-| Experiment | Measurement | Proposed target | Measured |
+| Experiment | What was measured | Target | Result |
 |---|---|---|---|
-| Self-heal, pod deleted | Replacement Ready | under 30 s | 5.2 s |
-| Self-heal, `/tmp/healthy` removed | Restarts 0 to 1, Ready again | under 30 s | 10.9 s |
-| Self-heal | Locust failures | error rate near 0 | 10 of 14031 (0.0713%) |
-| Rolling update | Failed requests | 0 | 0 of 11453 |
-| Recreate (control) | Failed requests | failures expected | 83 of 9308 |
-| Rollout undo | Failed requests during failed rollout and undo | 0 | 0 of 11257 |
-| Rollout undo | Ready pods during the failed rollout | at least 1 | 2 |
-| Rollout undo | Image after undo | previous image | `fraud-api:1.0.0` |
-| Scale-out, step profile | Replicas rise above the minimum of 2 | above minimum | peak 5 (max 6) |
-| Scale-out, step profile | Overload p95 against before | at least 3x | 7.04x (met) |
-| Scale-out, step profile | p95 after scale-out against overload | at least 50% lower | 0.474 lower (missed) |
-| Scale-out, step profile | Return to minimum after the step ends | after the default scale-down delay | 335 s |
+| Self-heal, pod deleted | Time until the new pod is Ready | under 30 s | 5.2 s |
+| Self-heal, `/tmp/healthy` removed | Restart and Ready again | under 30 s | 10.9 s |
+| Self-heal | Failed requests | error rate near 0 | 10 of 14,031 (0.0713%) |
+| Rolling update | Failed requests | 0 | 0 of 11,453 |
+| Recreate (comparison) | Failed requests | failures expected | 83 of 9,308 |
+| Rollback after a failed rollout | Failed requests | 0 | 0 of 11,257 |
+| Rollback after a failed rollout | Ready pods during the failed rollout | at least 1 | 2 |
+| Rollback after a failed rollout | Image after rollback | previous image | `fraud-api:1.0.0` |
+| Scale-out, step profile | Replicas rise above the minimum of 2 | above 2 | peak 5 (max 6) |
+| Scale-out, step profile | p95 under overload compared with before | at least 3x | 7.04x (met) |
+| Scale-out, step profile | p95 after scale-out compared with overload | at least 50% lower | 47.4% lower (missed) |
+| Scale-out, step profile | Return to 2 replicas after the load ends | after the default delay | 335 s |
 
-### Latency
+### Response times
 
-Self-heal and rollout runs: constant 10 users with a think time of 0.05 to 0.15 s per user. Other runs are described in their sections.
+Self-heal and rollout runs used a constant 10 users, each waiting 0.05 to 0.15 s between requests.
 
 | Run | Requests | RPS | p50 ms | p95 ms | p99 ms |
 |---|---|---|---|---|---|
-| Self-heal | 14031 | 94.1 | 5.0 | 9.0 | 12.0 |
-| Rolling update | 11453 | 96.2 | 4.0 | 6.0 | 7.0 |
-| Recreate | 9308 | 78.1 | 4.0 | 8.0 | 11.0 |
-| Rollout undo | 11257 | 94.5 | 5.0 | 8.0 | 10.0 |
-| Scale-out, moderate profile, whole run | 61118 | 145.4 | 4.0 | 7.0 | 11.0 |
-| Scale-out, stress run, whole run | 346667 | 823.7 | 50.0 | 200.0 | 300.0 |
+| Self-heal | 14,031 | 94.1 | 5.0 | 9.0 | 12.0 |
+| Rolling update | 11,453 | 96.2 | 4.0 | 6.0 | 7.0 |
+| Recreate | 9,308 | 78.1 | 4.0 | 8.0 | 11.0 |
+| Rollback | 11,257 | 94.5 | 5.0 | 8.0 | 10.0 |
+| Scale-out, moderate profile (whole run) | 61,118 | 145.4 | 4.0 | 7.0 | 11.0 |
+| Scale-out, stress profile (whole run) | 346,667 | 823.7 | 50.0 | 200.0 | 300.0 |
 
-## Capacity calibration
+## Capacity test
 
-The HPA was removed and the deployment held at a fixed replica count. The load rose by 10 users every 20 s, each user sending 2.0 requests per second. The generator is Locust `FastHttpUser` (1 process) and opens a new connection per request. Per-step p95 is the median of the per-second p95 values after the first 10 s of the step. The knee is the first step where that p95 and the next step's p95 are both at least 3 times the median p95 of the first three steps.
+The autoscaler was removed and the number of replicas was fixed. Load grew by 10 users every 20 s, and each user sent 2.0 requests per second. The load generator (Locust `FastHttpUser`, 1 process) opens a new connection for each request.
 
-| Replicas | Baseline p95 ms | Knee offered rps | Knee measured rps | Max measured rps | CPU ms per request | Generator CPU max % of one core |
+- **p95 per step:** the median of the per-second p95 values, after the first 10 s of the step.
+- **Breaking point:** the first step where p95 and the next step's p95 are both at least 3 times the median p95 of the first three steps.
+- No change was made to the CPU settings. The base values (request 250m, limit 500m) were used.
+
+| Replicas | p95 at start (ms) | Breaking point, offered RPS | Breaking point, measured RPS | Highest measured RPS | CPU ms per request | Load generator CPU, max (% of one core) |
 |---|---|---|---|---|---|---|
 | 1 | 56.0 | 180.0 | 176.4 | 176.4 | 1.575 (saturated steps) | 13.8 |
 | 2 | 20.0 | 180.0 | 180.0 | 333.2 | 1.567 | 24.4 |
 
-Generator CPU stayed below 80% of one core in every run (maximum 24.4%). CPU per request is the pod cgroup CPU time divided by the requests served in the step window.
-No pod CPU patch was applied. The base manifest values (request 250m, limit 500m) were used.
+The load generator stayed below 80% of one core in every run (maximum 24.4%). CPU per request is the pod CPU time divided by the requests served in the step.
 
 ## Scale-out, step profile
 
-### Success criteria
+### Plan
 
-Fixed before the run and not changed afterwards.
+Load pattern:
 
-- p95 during overload is at least 3 times the p95 before the load step.
-- p95 after scale-out is at least 50% lower than the p95 during overload.
+1. A constant base load of 30 RPS (15 users) for 90 s.
+2. A step up to 180 RPS (90 users), the breaking point of 2 replicas, for 300 s.
+3. The base load again for 120 s.
 
-Windows, all measured as the median of Locust per-second p95 values (a 10 s rolling window):
+Autoscaling settings: CPU target 50%, minimum 2 replicas, maximum 6. The run started with 2 replicas after 11 s of settling.
 
-- Before: from 10 s after the baseline load starts until the step.
-- Overload: from 10 s after the step until the first new replica is Ready (from the step itself when that leaves fewer than 5 samples).
-- After scale-out: from the first moment the Ready and total pod counts stay unchanged for 60 s, until the step ends.
-- Load off: from 10 s after the step ends until the run ends. The baseline load continues so that p95 stays measurable.
+Success criteria were fixed before the run and were not changed:
 
-Load: a constant baseline, one step to the calibrated 2-replica knee of 180.0 requests per second (90 users), a hold until the HPA settles, then the baseline again. HPA target 50% CPU, minimum 2, maximum 6.
+- p95 under overload is at least 3 times the p95 before the step.
+- p95 after scale-out is at least 50% lower than the p95 under overload.
+
+Time windows (each value is the median of Locust per-second p95 values):
+
+- **Before:** from 10 s after the base load starts until the step.
+- **Overload:** from 10 s after the step until the first new replica is Ready.
+- **After scale-out:** from the moment the pod counts stay unchanged for 60 s, until the step ends.
+- **After the step ends:** from 10 s after the step ends until the run ends. The base load continues so p95 can still be measured.
 
 ### Result
 
-Baseline 30 requests per second (15 users) for 90 s, step to 180 requests per second (90 users) for 300 s, then the baseline again for 120 s. The deployment started at 2 replicas after 11 s of settling (three consecutive CPU readings below the target).
-
-| Window | Seconds | Samples | Median rps | p95 ms (median) | p95 ms (max) |
+| Window | Seconds | Samples | Median RPS | p95 ms (median) | p95 ms (max) |
 |---|---|---|---|---|---|
 | Before the step | 82 | 81 | 30.0 | 27.0 | 75.0 |
 | Overload, before the first new replica is Ready | 22 | 22 | 180.0 | 190.0 | 200.0 |
 | After scale-out, replicas stable for 60 s | 222 | 221 | 180.0 | 100.0 | 130.0 |
 | After the step ends | 110 | 110 | 30.0 | 17.0 | 19.0 |
 
-| Criterion | Threshold | Measured | Outcome |
+| Criterion | Target | Result | Outcome |
 |---|---|---|---|
-| Overload p95 against before | at least 3.0x | 7.04x | met |
-| After scale-out p95 against overload | at least 50% lower | 0.474 (fraction lower) | missed |
+| p95 under overload compared with before | at least 3x | 7.04x | met |
+| p95 after scale-out compared with overload | at least 50% lower | 47.4% lower | missed |
 
-| Event | Seconds after the step |
+| Event | Time |
 |---|---|
-| First replica count increase seen | 43 |
-| First new replica Ready | 31.9 |
-| Replica counts stable for 60 s from | 77.1 |
+| First new replica Ready | 31.9 s after the step |
+| First increase in replica count seen | 43 s after the step |
+| Replica count stable for 60 s from | 77.1 s after the step |
 | Peak replicas | 5 (max 6) |
-| Back to 2 replicas, seconds after the step ends | 335 |
+| Back to 2 replicas | 335 s after the step ends |
 
-Replica count over time (seconds relative to the step; the HPA current and desired replicas and the average CPU utilization it reported):
+The first row comes from the one-second count of Ready pods. The second row comes from the replica count reported by the autoscaler, sampled about every 5 s. The two sources are sampled differently.
 
-| t s | Current | Desired | CPU % of request |
+Replicas and CPU over time (seconds relative to the step, selected rows):
+
+| Time (s) | Current replicas | Desired replicas | CPU % of request |
 |---|---|---|---|
 | -93 | 2 | 2 | 1 |
-| -76 | 2 | 2 | 3 |
-| -60 | 2 | 2 | 14 |
-| -44 | 2 | 2 | 14 |
 | -27 | 2 | 2 | 18 |
-| -11 | 2 | 2 | 18 |
-| 5 | 2 | 2 | 17 |
 | 22 | 2 | 2 | 19 |
 | 38 | 2 | 4 | 91 |
 | 54 | 4 | 4 | 102 |
-| 71 | 4 | 4 | 74 |
 | 87 | 5 | 5 | 59 |
-| 104 | 5 | 5 | 54 |
-| 120 | 5 | 5 | 49 |
-| 137 | 5 | 5 | 50 |
-| 153 | 5 | 5 | 49 |
-| 170 | 5 | 5 | 49 |
-| 186 | 5 | 5 | 49 |
-| 202 | 5 | 5 | 48 |
-| 219 | 5 | 5 | 50 |
-| 235 | 5 | 5 | 50 |
-| 252 | 5 | 5 | 48 |
-| 268 | 5 | 5 | 49 |
-| 285 | 5 | 5 | 49 |
-| 301 | 5 | 5 | 49 |
-| 317 | 5 | 5 | 45 |
+| 120 to 317 | 5 | 5 | 45 to 50 |
 | 334 | 5 | 5 | 18 |
-| 350 | 5 | 5 | 9 |
-| 366 | 5 | 5 | 9 |
-| 383 | 5 | 5 | 10 |
-| 399 | 5 | 5 | 10 |
-| 415 | 5 | 5 | 9 |
-| 442 | 5 | 5 | 9 |
-| 474 | 5 | 5 | 1 |
-| 506 | 5 | 5 | 1 |
-| 538 | 5 | 5 | 1 |
-| 569 | 5 | 5 | 1 |
-| 601 | 5 | 5 | 1 |
+| 474 to 601 | 5 | 5 | 1 |
 | 633 | 2 | 2 | 1 |
 
-Full series, per-pod CPU and the one-second Ready counts are in `reports/serving_results/hpa_step.json` and `raw/hpa_step/`.
+Selection rule: each single time shows the sample nearest to that time, and each range row shows the lowest to highest value among the samples within the range.
 
-## Scale-out, supporting runs
+The full series, CPU per pod, and the one-second Ready counts are in `reports/serving_results/hpa_step.json` and `raw/hpa_step/`.
+
+## Scale-out, other runs
 
 ### Moderate profile
 
-Think time 0.5 to 1.5 s per user, keep-alive sessions. Users ramp from 10 to 200 over 120 s, then hold for 240 s. The deployment started at 2 replicas after 17 s of settling. First replica increase 184 s after the ramp start, peak 4 replicas, back to the minimum 350 s after load ended. Each p95 is the median of the per-interval p95 in that window.
+- Each user waits 0.5 to 1.5 s between requests and keeps its connection open (keep-alive).
+- Users grow from 10 to 200 over 120 s, then stay at 200 for 240 s.
+- The run started with 2 replicas after 17 s of settling.
+- First replica increase: 184 s after the start of the ramp. Peak: 4 replicas. Back to 2 replicas: 350 s after the load ended.
 
 | Phase | Seconds from start | p95 ms |
 |---|---|---|
-| Before ramp | 0 to 60 | 4.0 |
+| Before the ramp | 0 to 60 | 4.0 |
 | Ramp | 60 to 180 | 6.0 |
 | Hold, early | 180 to 300 | 7.0 |
 | Hold, late | 300 to 420 | 7.0 |
 
 Data: `reports/serving_results/hpa.json`.
 
-### Stress run
+### Stress profile
 
-Think time 0.05 to 0.15 s per user, keep-alive sessions, the same 10 to 200 user ramp. Whole-run average load was 823.7 requests per second (346667 requests, 0 failures). Replicas reached 6. p95 was 9.0 ms before the ramp, 160.0 ms during the ramp, and 210.0 ms and 210.0 ms in the two hold windows, so p95 did not recover. The single machine shared with the load generator was the limit. Data: `reports/serving_results/hpa_stress.json`.
+- Each user waits 0.05 to 0.15 s between requests and keeps its connection open. The ramp is the same, 10 to 200 users.
+- Average load over the whole run: 823.7 RPS (346,667 requests, 0 failures). Replicas reached 6.
+- p95 was 9.0 ms before the ramp, 160.0 ms during the ramp, and 210.0 ms in both hold windows. It did not recover.
+- The limit was the single machine, shared with the load generator.
+
+Data: `reports/serving_results/hpa_stress.json`.
 
 ## Targets missed
 
-- Step profile: p95 after scale-out was 0.474 lower than during overload, below the 50% criterion.
-- Moderate profile, p95 recovery: p95 was 4.0 ms before the ramp and 7.0 ms in the last 120 s of the hold, after the replicas reached 4. It did not return to the pre-ramp level.
+- **Step profile:** p95 after scale-out was 47.4% lower than under overload. The target was 50%.
+- **Moderate profile:** p95 was 4.0 ms before the ramp and 7.0 ms in the last 120 s of the hold, with 4 replicas. It did not return to the starting level.
+- **Stress profile:** p95 was 9.0 ms before the ramp and 210.0 ms in both hold windows, with 6 replicas. It did not recover.
 
 ## Limits
 
-- The load generator and the cluster share one machine and one CPU budget. Locust competes with the API pods, the kind node, and metrics-server for the same cores.
-- Single-node kind demonstrates mechanisms (probes, restarts, rolling updates, autoscaling). The numbers do not describe production capacity.
-- During the self-heal and rollout runs the HPA is removed so the replica count stays at 2. It is applied again for the scale-out runs.
-- The step profile and the calibration use a new connection per request. The moderate and stress runs use keep-alive sessions, so their connections stay with the pods that existed when each user started.
-- Calibration steps last 20 s and the p95 values are noisy near the knee. The knee is a single measured rate, not a confidence interval.
-- Each run is a single execution. No repeat or confidence interval is reported.
-- Request payloads are rows from `data/sample/sample_features.csv`, so the score distribution is not production traffic.
+- The load generator and the cluster share one machine and one CPU budget. Locust competes with the API pods, the kind node, and metrics-server.
+- A single-node kind cluster shows how the mechanisms work (probes, restarts, rolling updates, autoscaling). The numbers do not describe production capacity.
+- The autoscaler is removed in the self-heal and rollout runs so the replica count stays at 2. It is applied again for the scale-out runs.
+- The step profile and the capacity test open a new connection for each request. The moderate and stress profiles keep connections open, so each user stays with the pod that first served it. New replicas receive traffic only from users that connect after the replicas are Ready. This is a likely limit on p95 recovery in those two profiles. The runs do not test this directly.
+- One Locust process creates all the load. Load generator CPU was recorded only in the capacity test, not in the stress run.
+- Each capacity step lasts 20 s, so p95 is noisy near the breaking point. The breaking point is one measured value with no confidence range.
+- Each run was done once. No repeats or confidence ranges are reported.
+- Requests use rows from `data/sample/sample_features.csv`, so the scores do not represent real traffic.
+
+## Batch scoring run
+
+The Airflow daily DAG scored every day window of the dataset on a local Airflow 3 stack with a Postgres metadata database.
+
+| Item | Value |
+|---|---|
+| DAG runs | 31 (one per 24-step day, day 30 covers steps 721 to 743) |
+| Total time for the full catch-up | 11 min 16 s |
+| Rows scored | 6,362,620 (same as the source; the 31 partitions add up to the same total) |
+| Output | one Parquet file per day under `data/scored/date=YYYY-MM-DD/` |
+| Rerun of day 5 | zero score difference from the first run |
+
+After each partition is written, a quality check runs. The run fails if any rule is broken:
+
+- The partition row count equals the source row count of the day window.
+- `txn_id`, `step`, and `score` have no empty values.
+- Every score is between 0 and 1.
+- The scores are not all the same (standard deviation above 0).
+
+Notes:
+
+- The run shows that the pipeline works and gives the same result when repeated. It is not a measure of model quality.
+- Days 0 to 24 are in the training range (the cutoff at step 594 falls in day 24), so the model has seen their labels. Model quality is reported in `reports/model_evaluation.md`, from the test part only.
+- Daily row counts range from 272 to 574,255 (`reports/eda_numbers.json`), so the run time of each day depends on the day.
+- The total time, the run count, and the day-5 comparison come from the run log of the catch-up. They are not stored as files in `reports/`.

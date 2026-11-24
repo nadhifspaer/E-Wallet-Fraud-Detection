@@ -1,14 +1,28 @@
 # Model Evaluation
 
-Single LightGBM classifier on PaySim transactions. Temporal split by `step`: train on steps up to 594, test on steps 595 to 743. All metrics below are computed on the test split only. Hyperparameters and seed are fixed in `src/config.py` (300 trees, learning rate 0.05, 63 leaves, `class_weight="balanced"`, seed 42), with no tuning and no early stopping.
+One LightGBM model trained on PaySim transactions. The data is split by time: the model trains on steps 1 to 594 and is tested on steps 595 to 743. All results below come from the test part only. Model settings and the random seed are fixed in `src/config.py` (300 trees, learning rate 0.05, 63 leaves, extra weight on fraud rows with `class_weight="balanced"`, seed 42). There is no tuning.
 
-## Data analysis
+**How to read the metrics**
 
-Numbers come from `reports/eda_numbers.json`. Figures are in `reports/figures/`.
+- **PR-AUC:** the main score. It goes from 0 to 1, and higher is better. A random guess scores the same as the fraud share in the data.
+- **Precision@K:** among the K rows with the highest scores, the share that is really fraud.
+- **Recall@K:** the share of all fraud found in the top K rows.
+- **False alarm:** a legitimate transaction flagged as fraud.
 
-**Size and labels.** The file has 6,362,620 rows over steps 1 to 743 (24 steps per day) and 8,213 fraud rows (rate 0.129%).
+## Data
 
-**Fraud by type** (`fraud_by_type.png`).
+Numbers come from `reports/eda_numbers.json`. Charts are in `reports/figures/`.
+
+- **Size:** 6,362,620 rows over steps 1 to 743 (24 steps per day). 8,213 rows are fraud (0.129%).
+- **Train part:** 6,239,040 rows, 6,559 fraud (0.105%).
+- **Test part:** 123,580 rows, 1,654 fraud (1.338%).
+- **Old flag:** `isFlaggedFraud` marks 16 rows. All 16 are fraud, but it finds only 0.195% of fraud (8,197 fraud rows are not flagged). It is not used as a feature.
+- **Accounts:** `nameOrig` is almost always unique (0.29% of rows share an account). `nameDest` repeats more (64.44% of rows share an account). No account history features are built.
+- **Amounts:** in the test part, the median legitimate amount is 162,603.89 for TRANSFER and CASH_OUT rows, and 66,393.21 for all rows.
+
+### Fraud by transaction type
+
+Chart: `fraud_by_type.png`.
 
 | Type | Rows | Fraud | Fraud rate |
 |---|---|---|---|
@@ -18,52 +32,61 @@ Numbers come from `reports/eda_numbers.json`. Figures are in `reports/figures/`.
 | PAYMENT | 2,151,495 | 0 | 0% |
 | TRANSFER | 532,909 | 4,097 | 0.769% |
 
-All fraud rows are TRANSFER or CASH_OUT. No row with `nameDest` starting with `M` (2,151,495 rows) is fraud.
+- All fraud is in TRANSFER and CASH_OUT.
+- No row with a `nameDest` that starts with `M` is fraud (2,151,495 rows).
 
-**Balance evidence** (`balance_evidence_by_label.png`), over TRANSFER and CASH_OUT rows (2,762,196 legitimate, 8,213 fraud), tolerance 0.01.
+### Balance checks
+
+Chart: `balance_evidence_by_label.png`. The checks use TRANSFER and CASH_OUT rows only (2,762,196 legitimate, 8,213 fraud), with a tolerance of 0.01.
 
 | Check | Legitimate | Fraud |
 |---|---|---|
-| Sender identity (`newbalanceOrig == oldbalanceOrg - amount`) | 9.49% | 99.45% |
-| Receiver identity (`newbalanceDest == oldbalanceDest + amount`) | 77.42% | 43.50% |
-| Both identities | 7.58% | 43.27% |
-| Exact drain (`amount == oldbalanceOrg`) | 0.00004% (1 row) | 97.82% (8,034 rows) |
-| `newbalanceOrig == 0` | 90.10% | 98.05% |
-| `oldbalanceDest == 0` and `newbalanceDest == 0` | 0.062% | 49.63% |
+| Sender balance falls by exactly the amount | 9.49% | 99.45% |
+| Receiver balance rises by exactly the amount | 77.42% | 43.50% |
+| Both of the above | 7.58% | 43.27% |
+| Sender loses the full balance (`amount == oldbalanceOrg`) | 0.00004% (1 row) | 97.82% (8,034 rows) |
+| Sender balance after the transaction is 0 | 90.10% | 98.05% |
+| Receiver balance is 0 before and after | 0.062% | 49.63% |
 
-**Legacy flag.** `isFlaggedFraud` marks 16 rows, all fraud (precision 100%, recall 0.195%, 8,197 fraud rows unflagged). It is not used as a feature.
+### Daily volume
 
-**Time** (`fraud_per_step.png`, `fraud_rate_by_hour.png`). The train side (steps 1 to 594) has 6,239,040 rows and 6,559 fraud rows (0.105%). The test side (steps 595 to 743) has 123,580 rows and 1,654 fraud rows (1.338%).
+Charts: `fraud_per_step.png` and `fraud_rate_by_hour.png`. Daily numbers are in the `daily` block of `reports/eda_numbers.json`.
 
-**Amount** (`amount_by_label.png`). The distribution by label is shown on a log scale. Median legitimate amount in the test split is 162,603.89 for TRANSFER and CASH_OUT rows and 66,393.21 for all rows.
-
-**Account repetition.** `nameOrig` has 6,353,307 unique values over 6,362,620 rows, and 0.29% of rows share their key with another row. `nameDest` has 2,722,362 unique values, and 64.44% of rows share their key. No account-level velocity feature is built.
+- Rows per day range from 272 (day 30, steps 721 to 743) to 574,255 (day 0).
+- Fraud rows per day stay between 216 and 320, so the daily fraud rate follows the volume.
+- Day 2 has 310 fraud rows out of 1,070 (29.0%).
+- Day 30 has 272 rows, and all 272 are fraud (100%).
+- The cutoff at step 594 falls inside day 24 (steps 577 to 600).
 
 ## Ablation
 
-Five additive variants, trained with the same split, hyperparameters, and seed. Test PR-AUC per variant. Variant 5 uses `newbalanceOrig` and `newbalanceDest`, which are outside the final feature list, and exists for measurement only.
+Five variants add features step by step. All variants use the same split, settings, and seed. The table shows PR-AUC on the test part. Variant 5 uses columns that are not in the final model. It is a measurement only.
 
 | Variant | Features added | PR-AUC, TRANSFER and CASH_OUT | PR-AUC, all rows |
 |---|---|---|---|
 | 1 | `amount`, `hour_of_day` | 0.4035 | 0.3715 |
-| 2 | type one-hot columns | 0.5036 | 0.5036 |
+| 2 | type columns | 0.5036 | 0.5036 |
 | 3 | `oldbalanceOrg`, `oldbalanceDest` | 0.9768 | 0.9768 |
-| 4 | `orig_drain_ratio` (final feature list) | 0.9809 | 0.9807 |
+| 4 | `orig_drain_ratio` (final model) | 0.9809 | 0.9807 |
 | 5 | `newbalanceOrig`, `newbalanceDest` (measurement only) | 0.9972 | 0.9972 |
 
 ![Test PR-AUC by ablation variant](figures/ablation_pr_auc.png)
 
-Variant 3 adds both old balance columns together, so the table does not separate their individual effects.
+Scores are for TRANSFER and CASH_OUT rows, with the gain over the previous variant.
 
-Adding the old balance columns raises PR-AUC by 0.4732 (TRANSFER and CASH_OUT). Adding the drain ratio raises it by 0.0041. Adding the new balance columns to the final feature list raises it by a further 0.0163. The new balance columns stay out of the final feature list.
+- **Variant 1 (0.4035):** `amount` and `hour_of_day` alone. This is well above the 3.225% fraud share in these rows. On all rows the score is lower (0.3715), because the model cannot tell which types never have fraud.
+- **Variant 2 (0.5036, +0.1001):** the type columns let the model give low scores to CASH_IN, DEBIT, and PAYMENT. Both groups now score the same, because all fraud is in TRANSFER or CASH_OUT.
+- **Variant 3 (0.9768, +0.4732):** the old balances give the biggest gain. 97.82% of fraud rows empty the sender balance, against 1 legitimate row. `oldbalanceOrg` is needed to see this. This variant adds two columns together, so their separate effects are not shown.
+- **Variant 4 (0.9809, +0.0041):** `orig_drain_ratio` shows the same pattern directly. The gain is small, but it is positive on both groups.
+- **Variant 5 (0.9972, +0.0163):** the new balances are known only after the transaction is done, so they cannot be used when a transaction is scored. This is not a usable feature set. The final model gives up 0.0163 PR-AUC to stay usable before the transaction is done.
 
-## Metrics
+## Results
 
-Test split, final feature list. PR-AUC is the primary metric, computed with `sklearn.metrics.average_precision_score`. K values are 100, 500, 1,000, the number of test fraud rows, and 0.1% and 0.5% of the population size. Precision@K is skipped for K above the number of test fraud rows (1,654).
+Test part, final model. PR-AUC is computed with `sklearn.metrics.average_precision_score`. K values are 100, 500, 1,000, all test fraud (1,654), and 0.1% and 0.5% of the rows in each group. Precision@K is not shown when K is above the number of fraud rows (1,654).
 
 ### TRANSFER and CASH_OUT rows
 
-51,286 rows, 1,654 fraud rows, prevalence 3.225%. PR-AUC 0.9809.
+51,286 rows, 1,654 fraud (3.225%). **PR-AUC: 0.9809.**
 
 | K | Precision@K | Recall@K |
 |---|---|---|
@@ -74,28 +97,14 @@ Test split, final feature list. PR-AUC is the primary metric, computed with `skl
 | 1,000 | 0.9980 | 0.6034 |
 | 1,654 | 0.9601 | 0.9601 |
 
-| Target recall | Threshold | Flagged | True positives | False positives | FPR |
+| Target recall | Score cutoff | Flagged | Fraud found | False alarms | False alarm rate |
 |---|---|---|---|---|---|
 | 80% | 0.99976 | 1,328 | 1,324 | 4 | 0.0081% |
 | 90% | 0.98794 | 1,523 | 1,489 | 34 | 0.0685% |
 
-Cost at the threshold that reaches each target recall. Missed loss is the sum of `amount` over missed fraud rows. Friction is the number of false positives times the friction value. All values are in the units of the `amount` column.
-
-| Target recall | Missed loss | Prevented loss | Friction at 0.1x (1,000 per FP) | Friction at 1x (10,000 per FP) | Friction at 10x (100,000 per FP) |
-|---|---|---|---|---|---|
-| 80% | 53,652,378 | 2,668,782,191 | 4,000 | 40,000 | 400,000 |
-| 90% | 24,564,265 | 2,697,870,304 | 34,000 | 340,000 | 3,400,000 |
-
-Total cost (missed loss plus friction):
-
-| Target recall | 0.1x | 1x | 10x |
-|---|---|---|---|
-| 80% | 53,656,378 | 53,692,378 | 54,052,378 |
-| 90% | 24,598,265 | 24,904,265 | 27,964,265 |
-
 ### All rows
 
-123,580 rows, 1,654 fraud rows, prevalence 1.338%. PR-AUC 0.9807.
+123,580 rows, 1,654 fraud (1.338%). **PR-AUC: 0.9807.**
 
 | K | Precision@K | Recall@K |
 |---|---|---|
@@ -106,19 +115,34 @@ Total cost (missed loss plus friction):
 | 1,000 | 0.9980 | 0.6034 |
 | 1,654 | 0.9601 | 0.9601 |
 
-| Target recall | Threshold | Flagged | True positives | False positives | FPR |
+| Target recall | Score cutoff | Flagged | Fraud found | False alarms | False alarm rate |
 |---|---|---|---|---|---|
 | 80% | 0.99976 | 1,328 | 1,324 | 4 | 0.0033% |
 | 90% | 0.98794 | 1,523 | 1,489 | 34 | 0.0279% |
 
-The flagged sets, and therefore the cost values, are identical to the TRANSFER and CASH_OUT population. The cost tables above apply to both populations. The FPR differs because the legitimate row count in the denominator differs.
+The flagged rows are the same in both groups. Only the false alarm rate differs, because the number of legitimate rows differs.
 
-## Assumptions
+### Cost
 
-- **Prevalence shift.** Fraud prevalence is 0.105% in the train split and 1.338% in the test split (3.225% among TRANSFER and CASH_OUT test rows). PR-AUC and Precision@K depend on prevalence, so they are not comparable with figures from the full dataset or from a random split.
-- **Exact balance drain.** In this data, 97.82% of fraud rows in TRANSFER and CASH_OUT have `amount == oldbalanceOrg`, against 1 legitimate row. This is a regularity of the simulated data. Legitimate full withdrawals exist in production, so the strength of this signal and the PR-AUC reached with it should not be expected to transfer.
-- **Balance columns.** The old balance columns and the drain ratio are in the final feature list because the ablation shows a measured gain. The new balance columns are excluded. `newbalanceOrig` and `newbalanceDest` are recorded after the transaction executes, so they are not available when a transaction is scored. This is why they are excluded even though they raise PR-AUC to 0.9972. The test metrics reflect how this simulator generates balances.
-- **Friction cost.** The cost of one false positive is set to 10,000 in the units of the `amount` column. It is a business assumption that PaySim cannot supply. It equals 6.1% of the median legitimate amount in TRANSFER and CASH_OUT test rows. Sensitivity is reported at 0.1x (1,000) and 10x (100,000).
-- **Cost threshold.** Cost is computed at the lowest score threshold that reaches the target recall (80% or 90%) on the test split, flagging every row with a score at or above it. The loss per missed fraud row is its transaction amount. Prevented loss is the amount of fraud rows flagged. The threshold is chosen using test labels, so it describes the achievable operating point and is not a deployed threshold.
-- **Target recall and K values.** The recall targets (80%, 90%) and the K values are review-capacity assumptions, not derived from the data.
-- **Single split and seed.** All results come from one temporal split and one seed. No confidence intervals are computed.
+The cost is measured at the score cutoff that reaches each target recall. All values use the same units as the `amount` column.
+
+- **Missed loss:** the total amount of fraud that was not flagged.
+- **Prevented loss:** the total amount of fraud that was flagged.
+- **Total cost:** missed loss plus the cost of false alarms. The cost of one false alarm is an assumption, so three levels are shown.
+
+| Target recall | Missed loss | Prevented loss | Total cost at 1,000 per false alarm | Total cost at 10,000 per false alarm | Total cost at 100,000 per false alarm |
+|---|---|---|---|---|---|
+| 80% | 53,652,378 | 2,668,782,191 | 53,656,378 | 53,692,378 | 54,052,378 |
+| 90% | 24,564,265 | 2,697,870,304 | 24,598,265 | 24,904,265 | 27,964,265 |
+
+These values are the same for both groups.
+
+## Assumptions and limits
+
+- **Different fraud share.** Fraud is 0.105% in the train part and 1.338% in the test part (3.225% in TRANSFER and CASH_OUT test rows). PR-AUC and Precision@K change with this share, so they cannot be compared with results from the full data or from a random split.
+- **A pattern of the simulator.** In this data, 97.82% of fraud rows empty the sender balance, against 1 legitimate row. This is how the simulator creates fraud. In real systems, legitimate full withdrawals exist, so do not expect the same strength or the same PR-AUC.
+- **Balance columns.** The old balances and the drain ratio are in the final model because they improve the results. The new balances are excluded, even though they raise PR-AUC to 0.9972, because they are known only after the transaction is done.
+- **Cost of a false alarm.** It is set to 10,000, in the same units as `amount`. This is a business assumption that PaySim cannot give. It is 6.1% of the median legitimate amount in TRANSFER and CASH_OUT test rows. Results are also shown at 1,000 and 100,000.
+- **Score cutoff.** The cutoff is chosen using the test labels. It shows what is possible, and it is not a cutoff for real use. The scores are model outputs, not true probabilities.
+- **Targets and K values.** The recall targets (80% and 90%) and the K values are assumptions about how many cases a team can review. They do not come from the data.
+- **One split, one seed.** All results come from one time split and one seed. No confidence ranges are computed.

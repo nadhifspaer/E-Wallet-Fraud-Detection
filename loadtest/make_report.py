@@ -5,6 +5,67 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "reports" / "serving_results"
 REPORT = ROOT / "reports" / "serving_benchmark.md"
 
+INTRO = [
+    "# Serving Benchmark",
+    "",
+    "This report shows how the scoring API behaves on a local single-node kind cluster. Every number is read from `reports/serving_results/*.json`.",
+    "",
+    "**How to read the results**",
+    "",
+    "- **Replica:** one running copy of the API.",
+    "- **Autoscaling (HPA):** Kubernetes adds or removes replicas based on CPU use.",
+    "- **RPS:** requests per second.",
+    "- **p50, p95, p99:** response times. For p95, 95 of 100 requests were faster than this value.",
+    "- **Rolling update:** a new version is started step by step while the old one keeps serving.",
+    "- **Recreate:** the old version is stopped first, then the new one starts. It is used here as a comparison.",
+    "",
+]
+
+LIMITS = [
+    "## Limits",
+    "",
+    "- The load generator and the cluster share one machine and one CPU budget. Locust competes with the API pods, the kind node, and metrics-server.",
+    "- A single-node kind cluster shows how the mechanisms work (probes, restarts, rolling updates, autoscaling). The numbers do not describe production capacity.",
+    "- The autoscaler is removed in the self-heal and rollout runs so the replica count stays at 2. It is applied again for the scale-out runs.",
+    "- The step profile and the capacity test open a new connection for each request. The moderate and stress profiles keep connections open, so each user stays with the pod that first served it. New replicas receive traffic only from users that connect after the replicas are Ready. This is a likely limit on p95 recovery in those two profiles. The runs do not test this directly.",
+    "- One Locust process creates all the load. Load generator CPU was recorded only in the capacity test, not in the stress run.",
+    "- Each capacity step lasts 20 s, so p95 is noisy near the breaking point. The breaking point is one measured value with no confidence range.",
+    "- Each run was done once. No repeats or confidence ranges are reported.",
+    "- Requests use rows from `data/sample/sample_features.csv`, so the scores do not represent real traffic.",
+    "",
+]
+
+BATCH_SECTION = [
+    "## Batch scoring run",
+    "",
+    "The Airflow daily DAG scored every day window of the dataset on a local Airflow 3 stack with a Postgres metadata database.",
+    "",
+    "| Item | Value |",
+    "|---|---|",
+    "| DAG runs | 31 (one per 24-step day, day 30 covers steps 721 to 743) |",
+    "| Total time for the full catch-up | 11 min 16 s |",
+    "| Rows scored | 6,362,620 (same as the source; the 31 partitions add up to the same total) |",
+    "| Output | one Parquet file per day under `data/scored/date=YYYY-MM-DD/` |",
+    "| Rerun of day 5 | zero score difference from the first run |",
+    "",
+    "After each partition is written, a quality check runs. The run fails if any rule is broken:",
+    "",
+    "- The partition row count equals the source row count of the day window.",
+    "- `txn_id`, `step`, and `score` have no empty values.",
+    "- Every score is between 0 and 1.",
+    "- The scores are not all the same (standard deviation above 0).",
+    "",
+    "Notes:",
+    "",
+    "- The run shows that the pipeline works and gives the same result when repeated. It is not a measure of model quality.",
+    "- Days 0 to 24 are in the training range (the cutoff at step 594 falls in day 24), so the model has seen their labels. Model quality is reported in `reports/model_evaluation.md`, from the test part only.",
+    "- Daily row counts range from 272 to 574,255 (`reports/eda_numbers.json`), so the run time of each day depends on the day.",
+    "- The total time, the run count, and the day-5 comparison come from the run log of the catch-up. They are not stored as files in `reports/`.",
+]
+
+SELECTED_POINTS = (-93, -27, 22, 38, 54, 87, 334, 633)
+SELECTED_RANGES = ((120, 317), (474, 601))
+
 
 def load(name: str) -> dict | None:
     """Read one result JSON, or None when the run has not happened."""
@@ -17,22 +78,65 @@ def fmt(value, unit: str = "") -> str:
     return "not reached" if value is None else f"{value}{unit}"
 
 
+def pct(value) -> str:
+    """Format a fraction as a percentage with one decimal."""
+    return "not reached" if value is None else f"{value:.1%}"
+
+
+def span(values: list) -> str:
+    """Format one value or a min to max range."""
+    lo, hi = min(values), max(values)
+    return str(lo) if lo == hi else f"{lo} to {hi}"
+
+
+def hold_text(p: dict) -> str:
+    """Describe the two hold-window p95 values."""
+    if p["hold_early"] == p["hold_late"]:
+        return f"{p['hold_early']} ms in both hold windows"
+    return f"{p['hold_early']} ms and {p['hold_late']} ms in the two hold windows"
+
+
+def selected_rows(series: list[dict]) -> list[str]:
+    """Pick the nearest sample to each listed time and summarize each listed range."""
+    entries = []
+    for t in SELECTED_POINTS:
+        s = min(series, key=lambda x: abs(x["t"] - t))
+        entries.append((s["t"], s["t"], s["t"]) + ((s,),))
+    for a, b in SELECTED_RANGES:
+        sel = [s for s in series if a <= s["t"] <= b]
+        entries.append((sel[0]["t"], sel[0]["t"], sel[-1]["t"], tuple(sel)))
+    rows = []
+    for _, first, last, sel in sorted(entries, key=lambda e: e[0]):
+        label = str(first) if first == last else f"{first} to {last}"
+        cpu = [s["cpu_pct"] for s in sel if s["cpu_pct"] is not None]
+        rows.append(
+            f"| {label} | {span([s['current'] for s in sel])} | {span([s['desired'] for s in sel])} | {span(cpu) if cpu else 'not reached'} |"
+        )
+    return rows
+
+
 def capacity_section(cap: dict) -> list[str]:
-    """Render the capacity calibration section."""
+    """Render the capacity test section."""
     g = cap["generator"]
     patch = cap["pod_cpu_patch"]
     lines = [
-        "## Capacity calibration",
+        "## Capacity test",
         "",
         (
-            "The HPA was removed and the deployment held at a fixed replica count. The load rose by 10 users every "
-            f"{g['step_seconds']} s, each user sending {g['per_user_rps']} requests per second. "
-            f"The generator is Locust `FastHttpUser` ({g['processes']} process) and opens a new connection per request. "
-            "Per-step p95 is the median of the per-second p95 values after the first 10 s of the step. "
-            "The knee is the first step where that p95 and the next step's p95 are both at least 3 times the median p95 of the first three steps."
+            "The autoscaler was removed and the number of replicas was fixed. "
+            f"Load grew by 10 users every {g['step_seconds']} s, and each user sent {g['per_user_rps']} requests per second. "
+            f"The load generator (Locust `FastHttpUser`, {g['processes']} process) opens a new connection for each request."
         ),
         "",
-        "| Replicas | Baseline p95 ms | Knee offered rps | Knee measured rps | Max measured rps | CPU ms per request | Generator CPU max % of one core |",
+        "- **p95 per step:** the median of the per-second p95 values, after the first 10 s of the step.",
+        "- **Breaking point:** the first step where p95 and the next step's p95 are both at least 3 times the median p95 of the first three steps.",
+        (
+            f"- CPU settings were changed for this test only: request {patch['request']}, limit {patch['limit']}."
+            if patch
+            else "- No change was made to the CPU settings. The base values (request 250m, limit 500m) were used."
+        ),
+        "",
+        "| Replicas | p95 at start (ms) | Breaking point, offered RPS | Breaking point, measured RPS | Highest measured RPS | CPU ms per request | Load generator CPU, max (% of one core) |",
         "|---|---|---|---|---|---|---|",
     ]
     for key in ("1", "2"):
@@ -54,50 +158,17 @@ def capacity_section(cap: dict) -> list[str]:
     lines += [
         "",
         (
-            f"Generator CPU stayed below 80% of one core in every run (maximum {g['max_process_cpu_pct']}%). "
-            "CPU per request is the pod cgroup CPU time divided by the requests served in the step window."
+            f"The load generator stayed below 80% of one core in every run (maximum {g['max_process_cpu_pct']}%). "
+            "CPU per request is the pod CPU time divided by the requests served in the step."
         ),
+        "",
     ]
-    if patch:
-        lines.append(
-            f"Pod CPU was patched for the calibration and the step run only: request {patch['request']}, limit {patch['limit']}."
-        )
-    else:
-        lines.append(
-            "No pod CPU patch was applied. The base manifest values (request 250m, limit 500m) were used."
-        )
-    lines.append("")
     return lines
-
-
-def criteria_section(cap: dict) -> list[str]:
-    """Render the success criteria fixed before the step run."""
-    return [
-        "### Success criteria",
-        "",
-        "Fixed before the run and not changed afterwards.",
-        "",
-        "- p95 during overload is at least 3 times the p95 before the load step.",
-        "- p95 after scale-out is at least 50% lower than the p95 during overload.",
-        "",
-        "Windows, all measured as the median of Locust per-second p95 values (a 10 s rolling window):",
-        "",
-        "- Before: from 10 s after the baseline load starts until the step.",
-        "- Overload: from 10 s after the step until the first new replica is Ready (from the step itself when that leaves fewer than 5 samples).",
-        "- After scale-out: from the first moment the Ready and total pod counts stay unchanged for 60 s, until the step ends.",
-        "- Load off: from 10 s after the step ends until the run ends. The baseline load continues so that p95 stays measurable.",
-        "",
-        (
-            f"Load: a constant baseline, one step to the calibrated 2-replica knee of {cap['step_offered_rps']} requests per second "
-            f"({cap['step_users']} users), a hold until the HPA settles, then the baseline again. HPA target 50% CPU, minimum 2, maximum 6."
-        ),
-        "",
-    ]
 
 
 def step_section(step: dict | None, cap: dict) -> list[str]:
     """Render the step-profile scale-out section."""
-    lines = ["## Scale-out, step profile", ""] + criteria_section(cap)
+    lines = ["## Scale-out, step profile", ""]
     if step is None:
         return lines + ["Result pending.", ""]
     load, w, c = step["load"], step["windows"], step["criteria"]
@@ -106,17 +177,31 @@ def step_section(step: dict | None, cap: dict) -> list[str]:
         c["after_scale_out_p95_at_least_50pct_lower"],
     )
     lines += [
+        "### Plan",
+        "",
+        "Load pattern:",
+        "",
+        f"1. A constant base load of {load['base_rps']:.0f} RPS ({load['base_users']} users) for {load['base_seconds']} s.",
+        f"2. A step up to {load['step_rps']:.0f} RPS ({load['step_users']} users), the breaking point of 2 replicas, for {load['step_seconds']} s.",
+        f"3. The base load again for {load['tail_seconds']} s.",
+        "",
+        f"Autoscaling settings: CPU target 50%, minimum {step['min_replicas']} replicas, maximum {step['max_replicas']}. The run started with {step['start_replicas']} replicas after {step['settle_wait_seconds']} s of settling.",
+        "",
+        "Success criteria were fixed before the run and were not changed:",
+        "",
+        "- p95 under overload is at least 3 times the p95 before the step.",
+        "- p95 after scale-out is at least 50% lower than the p95 under overload.",
+        "",
+        "Time windows (each value is the median of Locust per-second p95 values):",
+        "",
+        "- **Before:** from 10 s after the base load starts until the step.",
+        "- **Overload:** from 10 s after the step until the first new replica is Ready.",
+        "- **After scale-out:** from the moment the pod counts stay unchanged for 60 s, until the step ends.",
+        "- **After the step ends:** from 10 s after the step ends until the run ends. The base load continues so p95 can still be measured.",
+        "",
         "### Result",
         "",
-        (
-            f"Baseline {load['base_rps']:.0f} requests per second ({load['base_users']} users) for {load['base_seconds']} s, "
-            f"step to {load['step_rps']:.0f} requests per second ({load['step_users']} users) for {load['step_seconds']} s, "
-            f"then the baseline again for {load['tail_seconds']} s. "
-            f"The deployment started at {step['start_replicas']} replicas after {step['settle_wait_seconds']} s of settling "
-            "(three consecutive CPU readings below the target)."
-        ),
-        "",
-        "| Window | Seconds | Samples | Median rps | p95 ms (median) | p95 ms (max) |",
+        "| Window | Seconds | Samples | Median RPS | p95 ms (median) | p95 ms (max) |",
         "|---|---|---|---|---|---|",
     ]
     for name, label in (
@@ -132,53 +217,57 @@ def step_section(step: dict | None, cap: dict) -> list[str]:
     met = lambda ok: "met" if ok else "missed"
     lines += [
         "",
-        "| Criterion | Threshold | Measured | Outcome |",
+        "| Criterion | Target | Result | Outcome |",
         "|---|---|---|---|",
-        f"| Overload p95 against before | at least {c1['threshold']}x | {fmt(c1['measured_ratio'], 'x')} | {met(c1['met'])} |",
-        f"| After scale-out p95 against overload | at least {c2['threshold']:.0%} lower | {fmt(c2['measured_drop'])} (fraction lower) | {met(c2['met'])} |",
+        f"| p95 under overload compared with before | at least {c1['threshold']:.0f}x | {fmt(c1['measured_ratio'], 'x')} | {met(c1['met'])} |",
+        f"| p95 after scale-out compared with overload | at least {c2['threshold']:.0%} lower | {pct(c2['measured_drop'])} lower | {met(c2['met'])} |",
         "",
-        "| Event | Seconds after the step |",
+        "| Event | Time |",
         "|---|---|",
-        f"| First replica count increase seen | {fmt(step['first_scale_up_seconds_after_step'])} |",
-        f"| First new replica Ready | {fmt(step['first_new_replica_ready_seconds_after_step'])} |",
-        f"| Replica counts stable for 60 s from | {fmt(step['replicas_stable_seconds_after_step'])} |",
+        f"| First new replica Ready | {fmt(step['first_new_replica_ready_seconds_after_step'], ' s after the step')} |",
+        f"| First increase in replica count seen | {fmt(step['first_scale_up_seconds_after_step'], ' s after the step')} |",
+        f"| Replica count stable for 60 s from | {fmt(step['replicas_stable_seconds_after_step'], ' s after the step')} |",
         f"| Peak replicas | {step['peak_replicas']} (max {step['max_replicas']}) |",
-        f"| Back to {step['min_replicas']} replicas, seconds after the step ends | {fmt(step['scale_down_to_min_seconds_after_step_end'])} |",
+        f"| Back to {step['min_replicas']} replicas | {fmt(step['scale_down_to_min_seconds_after_step_end'], ' s after the step ends')} |",
         "",
-        "Replica count over time (seconds relative to the step; the HPA current and desired replicas and the average CPU utilization it reported):",
+        "The first row comes from the one-second count of Ready pods. The second row comes from the replica count reported by the autoscaler, sampled about every 5 s. The two sources are sampled differently.",
         "",
-        "| t s | Current | Desired | CPU % of request |",
+        "Replicas and CPU over time (seconds relative to the step, selected rows):",
+        "",
+        "| Time (s) | Current replicas | Desired replicas | CPU % of request |",
         "|---|---|---|---|",
-    ]
-    for s in step["series"][::3]:
-        lines.append(
-            f"| {s['t']} | {s['current']} | {s['desired']} | {fmt(s['cpu_pct'])} |"
-        )
-    lines += [
+        *selected_rows(step["series"]),
         "",
-        "Full series, per-pod CPU and the one-second Ready counts are in `reports/serving_results/hpa_step.json` and `raw/hpa_step/`.",
+        "Selection rule: each single time shows the sample nearest to that time, and each range row shows the lowest to highest value among the samples within the range.",
+        "",
+        "The full series, CPU per pod, and the one-second Ready counts are in `reports/serving_results/hpa_step.json` and `raw/hpa_step/`.",
         "",
     ]
     return lines
 
 
-def missed_list(step: dict | None, hpa: dict) -> list[str]:
+def missed_list(step: dict | None, hpa: dict, stress: dict) -> list[str]:
     """List the targets that were not met."""
     out = []
     if step is not None:
         c = step["criteria"]
         if not c["overload_p95_at_least_3x_before"]["met"]:
             out.append(
-                f"- Step profile: overload p95 was {c['overload_p95_at_least_3x_before']['measured_ratio']}x the pre-step p95, below the 3x criterion."
+                f"- **Step profile:** p95 under overload was {c['overload_p95_at_least_3x_before']['measured_ratio']}x the p95 before the step. The target was 3x."
             )
         if not c["after_scale_out_p95_at_least_50pct_lower"]["met"]:
             out.append(
-                f"- Step profile: p95 after scale-out was {c['after_scale_out_p95_at_least_50pct_lower']['measured_drop']} lower than during overload, below the 50% criterion."
+                f"- **Step profile:** p95 after scale-out was {pct(c['after_scale_out_p95_at_least_50pct_lower']['measured_drop'])} lower than under overload. The target was 50%."
             )
     p95 = hpa["p95_ms_by_phase"]
     if p95["hold_late"] is None or p95["hold_late"] > p95["before"]:
         out.append(
-            f"- Moderate profile, p95 recovery: p95 was {p95['before']} ms before the ramp and {p95['hold_late']} ms in the last 120 s of the hold, after the replicas reached {hpa['peak_replicas']}. It did not return to the pre-ramp level."
+            f"- **Moderate profile:** p95 was {p95['before']} ms before the ramp and {p95['hold_late']} ms in the last 120 s of the hold, with {hpa['peak_replicas']} replicas. It did not return to the starting level."
+        )
+    sp = stress["p95_ms_by_phase"]
+    if sp["hold_late"] is None or sp["hold_late"] > sp["before"]:
+        out.append(
+            f"- **Stress profile:** p95 was {sp['before']} ms before the ramp and {hold_text(sp)}, with {stress['peak_replicas']} replicas. It did not recover."
         )
     return out or ["- None."]
 
@@ -191,36 +280,32 @@ def build() -> str:
     ph = roll["phases"]
     p95 = hpa["p95_ms_by_phase"]
     sp95 = stress["p95_ms_by_phase"]
-    lines = [
-        "# Serving Benchmark",
-        "",
-        "Measured behavior of the scoring API on a local single-node kind cluster. Every number below is read from `reports/serving_results/*.json`.",
-        "",
+    lines = INTRO + [
         "## Environment",
         "",
-        f"- CPU: {env['cpu_model']} ({env['cpu_threads']} threads visible to WSL2)",
-        f"- RAM visible to WSL2: {env['ram_gb']} GB",
-        f"- Kernel: {env['kernel']}",
-        f"- Cluster: {env['kind']}, one control-plane node, metrics-server with insecure kubelet TLS",
-        "- Workload: 2 to 6 API replicas, one uvicorn worker each, LightGBM with `n_jobs=1`",
-        "- Requests: 250m CPU, 256Mi memory. Limits: 500m CPU, 512Mi memory",
-        "- Rolling update settings: maxUnavailable 0, maxSurge 1, a 10 s `preStop` sleep, 60 s termination grace period",
-        "- Load generator: Locust, headless, on the same machine as the cluster",
+        f"- **CPU:** {env['cpu_model'].split(' w/ ')[0]} ({env['cpu_threads']} threads visible to WSL2).",
+        f"- **Memory:** {env['ram_gb']} GB visible to WSL2.",
+        f"- **Kernel:** {env['kernel']}.",
+        f"- **Cluster:** {' '.join(env['kind'].split()[:2])}, one control-plane node, metrics-server with insecure kubelet TLS.",
+        "- **API:** 2 to 6 replicas, one uvicorn worker each, LightGBM with `n_jobs=1`.",
+        "- **Resources per replica:** request 250m CPU and 256Mi memory, limit 500m CPU and 512Mi memory.",
+        "- **Rolling update settings:** `maxUnavailable` 0, `maxSurge` 1, 10 s `preStop` sleep, 60 s grace period.",
+        "- **Load generator:** Locust, headless, on the same machine as the cluster.",
         "",
         "## Results",
         "",
-        "Targets are proposals fixed before the runs. Latency values are measurements, with no latency target.",
+        "The targets were set before the runs. Response times are measurements only, with no target.",
         "",
-        "| Experiment | Measurement | Proposed target | Measured |",
+        "| Experiment | What was measured | Target | Result |",
         "|---|---|---|---|",
-        f"| Self-heal, pod deleted | Replacement Ready | under 30 s | {fmt(heal['pod_delete']['replacement_ready_seconds'], ' s')} |",
-        f"| Self-heal, `/tmp/healthy` removed | Restarts {heal['liveness_failure']['restarts_before']} to {heal['liveness_failure']['restarts_after']}, Ready again | under 30 s | {fmt(heal['liveness_failure']['ready_after_seconds'], ' s')} |",
-        f"| Self-heal | Locust failures | error rate near 0 | {heal['locust']['failures']} of {heal['locust']['requests']} ({heal['locust']['error_rate']:.4%}) |",
-        f"| Rolling update | Failed requests | 0 | {ph['rolling']['failures']} of {ph['rolling']['requests']} |",
-        f"| Recreate (control) | Failed requests | failures expected | {ph['recreate']['failures']} of {ph['recreate']['requests']} |",
-        f"| Rollout undo | Failed requests during failed rollout and undo | 0 | {ph['undo']['failures']} of {ph['undo']['requests']} |",
-        f"| Rollout undo | Ready pods during the failed rollout | at least 1 | {roll['undo']['ready_pods_during_failed_rollout']} |",
-        f"| Rollout undo | Image after undo | previous image | `{roll['undo']['image_after_undo']}` |",
+        f"| Self-heal, pod deleted | Time until the new pod is Ready | under 30 s | {fmt(heal['pod_delete']['replacement_ready_seconds'], ' s')} |",
+        f"| Self-heal, `/tmp/healthy` removed | Restart and Ready again | under 30 s | {fmt(heal['liveness_failure']['ready_after_seconds'], ' s')} |",
+        f"| Self-heal | Failed requests | error rate near 0 | {heal['locust']['failures']} of {heal['locust']['requests']:,} ({heal['locust']['error_rate']:.4%}) |",
+        f"| Rolling update | Failed requests | 0 | {ph['rolling']['failures']} of {ph['rolling']['requests']:,} |",
+        f"| Recreate (comparison) | Failed requests | failures expected | {ph['recreate']['failures']} of {ph['recreate']['requests']:,} |",
+        f"| Rollback after a failed rollout | Failed requests | 0 | {ph['undo']['failures']} of {ph['undo']['requests']:,} |",
+        f"| Rollback after a failed rollout | Ready pods during the failed rollout | at least 1 | {roll['undo']['ready_pods_during_failed_rollout']} |",
+        f"| Rollback after a failed rollout | Image after rollback | previous image | `{roll['undo']['image_after_undo']}` |",
     ]
     if step is not None:
         c = step["criteria"]
@@ -229,10 +314,10 @@ def build() -> str:
             c["after_scale_out_p95_at_least_50pct_lower"],
         )
         lines += [
-            f"| Scale-out, step profile | Replicas rise above the minimum of {step['min_replicas']} | above minimum | peak {step['peak_replicas']} (max {step['max_replicas']}) |",
-            f"| Scale-out, step profile | Overload p95 against before | at least 3x | {fmt(c1['measured_ratio'], 'x')} ({'met' if c1['met'] else 'missed'}) |",
-            f"| Scale-out, step profile | p95 after scale-out against overload | at least 50% lower | {fmt(c2['measured_drop'])} lower ({'met' if c2['met'] else 'missed'}) |",
-            f"| Scale-out, step profile | Return to minimum after the step ends | after the default scale-down delay | {fmt(step['scale_down_to_min_seconds_after_step_end'], ' s')} |",
+            f"| Scale-out, step profile | Replicas rise above the minimum of {step['min_replicas']} | above {step['min_replicas']} | peak {step['peak_replicas']} (max {step['max_replicas']}) |",
+            f"| Scale-out, step profile | p95 under overload compared with before | at least 3x | {fmt(c1['measured_ratio'], 'x')} ({'met' if c1['met'] else 'missed'}) |",
+            f"| Scale-out, step profile | p95 after scale-out compared with overload | at least 50% lower | {pct(c2['measured_drop'])} lower ({'met' if c2['met'] else 'missed'}) |",
+            f"| Scale-out, step profile | Return to {step['min_replicas']} replicas after the load ends | after the default delay | {fmt(step['scale_down_to_min_seconds_after_step_end'], ' s')} |",
         ]
     else:
         lines.append(
@@ -240,12 +325,10 @@ def build() -> str:
         )
     lines += [
         "",
-        "### Latency",
+        "### Response times",
         "",
-        "Self-heal and rollout runs: constant 10 users with a think time of 0.05 to 0.15 s per user. Other runs are described in their sections.",
+        "Self-heal and rollout runs used a constant 10 users, each waiting 0.05 to 0.15 s between requests.",
         "",
-    ]
-    lines += [
         "| Run | Requests | RPS | p50 ms | p95 ms | p99 ms |",
         "|---|---|---|---|---|---|",
     ]
@@ -253,57 +336,51 @@ def build() -> str:
         ("Self-heal", heal["locust"]),
         ("Rolling update", ph["rolling"]),
         ("Recreate", ph["recreate"]),
-        ("Rollout undo", ph["undo"]),
-        ("Scale-out, moderate profile, whole run", hpa["overall"]),
-        ("Scale-out, stress run, whole run", stress["overall"]),
+        ("Rollback", ph["undo"]),
+        ("Scale-out, moderate profile (whole run)", hpa["overall"]),
+        ("Scale-out, stress profile (whole run)", stress["overall"]),
     ]
     for name, r in runs:
         lines.append(
-            f"| {name} | {r['requests']} | {r['rps']} | {r['p50_ms']} | {r['p95_ms']} | {r['p99_ms']} |"
+            f"| {name} | {r['requests']:,} | {r['rps']} | {r['p50_ms']} | {r['p95_ms']} | {r['p99_ms']} |"
         )
     lines.append("")
     lines += capacity_section(cap)
     lines += step_section(step, cap)
     lines += [
-        "## Scale-out, supporting runs",
+        "## Scale-out, other runs",
         "",
         "### Moderate profile",
         "",
-        (
-            f"Think time {hpa['think_time_seconds'][0]} to {hpa['think_time_seconds'][1]} s per user, keep-alive sessions. Users ramp from {hpa['load']['users_from']} to {hpa['load']['users_to']} over {hpa['load']['ramp_seconds']} s, then hold for {hpa['load']['hold_seconds']} s. "
-            f"The deployment started at {hpa['start_replicas']} replicas after {hpa['settle_wait_seconds']} s of settling. First replica increase {fmt(hpa['first_scale_up_seconds'], ' s')} after the ramp start, peak {hpa['peak_replicas']} replicas, back to the minimum {fmt(hpa['scale_down_to_min_seconds_after_load'], ' s')} after load ended. Each p95 is the median of the per-interval p95 in that window."
-        ),
+        f"- Each user waits {hpa['think_time_seconds'][0]} to {hpa['think_time_seconds'][1]} s between requests and keeps its connection open (keep-alive).",
+        f"- Users grow from {hpa['load']['users_from']} to {hpa['load']['users_to']} over {hpa['load']['ramp_seconds']} s, then stay at {hpa['load']['users_to']} for {hpa['load']['hold_seconds']} s.",
+        f"- The run started with {hpa['start_replicas']} replicas after {hpa['settle_wait_seconds']} s of settling.",
+        f"- First replica increase: {fmt(hpa['first_scale_up_seconds'], ' s')} after the start of the ramp. Peak: {hpa['peak_replicas']} replicas. Back to {hpa['start_replicas']} replicas: {fmt(hpa['scale_down_to_min_seconds_after_load'], ' s')} after the load ended.",
         "",
         "| Phase | Seconds from start | p95 ms |",
         "|---|---|---|",
-        f"| Before ramp | 0 to 60 | {fmt(p95['before'])} |",
+        f"| Before the ramp | 0 to 60 | {fmt(p95['before'])} |",
         f"| Ramp | 60 to 180 | {fmt(p95['ramp'])} |",
         f"| Hold, early | 180 to 300 | {fmt(p95['hold_early'])} |",
         f"| Hold, late | 300 to 420 | {fmt(p95['hold_late'])} |",
         "",
         "Data: `reports/serving_results/hpa.json`.",
         "",
-        "### Stress run",
+        "### Stress profile",
         "",
-        (
-            f"Think time 0.05 to 0.15 s per user, keep-alive sessions, the same 10 to 200 user ramp. Whole-run average load was {stress['overall']['rps']} requests per second ({stress['overall']['requests']} requests, {stress['overall']['failures']} failures). Replicas reached {stress['peak_replicas']}. "
-            f"p95 was {sp95['before']} ms before the ramp, {sp95['ramp']} ms during the ramp, and {sp95['hold_early']} ms and {sp95['hold_late']} ms in the two hold windows, so p95 did not recover. The single machine shared with the load generator was the limit. Data: `reports/serving_results/hpa_stress.json`."
-        ),
+        "- Each user waits 0.05 to 0.15 s between requests and keeps its connection open. The ramp is the same, 10 to 200 users.",
+        f"- Average load over the whole run: {stress['overall']['rps']} RPS ({stress['overall']['requests']:,} requests, {stress['overall']['failures']} failures). Replicas reached {stress['peak_replicas']}.",
+        f"- p95 was {sp95['before']} ms before the ramp, {sp95['ramp']} ms during the ramp, and {hold_text(sp95)}. It did not recover.",
+        "- The limit was the single machine, shared with the load generator.",
+        "",
+        "Data: `reports/serving_results/hpa_stress.json`.",
         "",
         "## Targets missed",
         "",
-        *missed_list(step, hpa),
+        *missed_list(step, hpa, stress),
         "",
-        "## Limits",
-        "",
-        "- The load generator and the cluster share one machine and one CPU budget. Locust competes with the API pods, the kind node, and metrics-server for the same cores.",
-        "- Single-node kind demonstrates mechanisms (probes, restarts, rolling updates, autoscaling). The numbers do not describe production capacity.",
-        "- During the self-heal and rollout runs the HPA is removed so the replica count stays at 2. It is applied again for the scale-out runs.",
-        "- The step profile and the calibration use a new connection per request. The moderate and stress runs use keep-alive sessions, so their connections stay with the pods that existed when each user started.",
-        "- Calibration steps last 20 s and the p95 values are noisy near the knee. The knee is a single measured rate, not a confidence interval.",
-        "- Each run is a single execution. No repeat or confidence interval is reported.",
-        "- Request payloads are rows from `data/sample/sample_features.csv`, so the score distribution is not production traffic.",
-        "",
+        *LIMITS,
+        *BATCH_SECTION,
     ]
     return "\n".join(lines)
 
