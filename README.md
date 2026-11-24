@@ -2,6 +2,12 @@
 
 A single LightGBM classifier that scores e-wallet transactions for fraud risk, with four ways to run it: an in-process Streamlit demo, a local streaming stack, a Kubernetes serving demo, and an Airflow batch pipeline.
 
+## Architecture
+
+![Architecture: data preparation, training, one scoring path, and four run profiles](docs/img/architecture.png)
+
+Data flows from PaySim through Parquet, features, and LightGBM training into one scoring path (`src/score_pipeline.py`). The four run profiles all call that path. Run one profile at a time.
+
 ## Problem and approach
 
 - **Data.** PaySim, a simulated mobile-money dataset: 6,362,620 transactions over steps 1 to 743 (1 step is 1 hour), 8,213 fraud rows (0.129%). All fraud is in TRANSFER and CASH_OUT.
@@ -63,56 +69,6 @@ Single-node kind cluster, 2 to 6 API replicas, load generator on the same laptop
 ### Batch run (`reports/serving_benchmark.md`)
 
 31 Airflow runs scored 6,362,620 rows in 11 min 16 s. A rerun of day 5 produced zero score difference. The quality check enforces matching row counts, no nulls, scores in [0, 1], and a score standard deviation above 0.
-
-## Architecture
-
-```mermaid
-flowchart LR
-    subgraph P1["Profile 1: Streamlit cloud demo"]
-        S1["Streamlit app"] --> M1["score_pipeline + SHAP"]
-    end
-    subgraph P2["Profile 2: docker compose stack"]
-        K["Kafka"] --> C["Consumer"] --> A2["FastAPI /predict"]
-        C --> DB[("SQLite store")]
-        DB --> S2["Streamlit local mode"]
-        A2 --> PR["Prometheus"] --> G["Grafana"]
-    end
-    subgraph P3["Profile 3: kind cluster"]
-        SV["Service"] --> D["fraud-api Deployment, HPA 2 to 6"]
-        J["Optional batch Job"]
-    end
-    subgraph P4["Profile 4: Airflow batch"]
-        AF["Airflow DAG"] --> PQ[("Parquet partitions per day")]
-    end
-    MODEL[("models/model.txt")] --> P1
-    MODEL --> P2
-    MODEL --> P3
-    MODEL --> P4
-```
-
-### Streaming flow
-
-```mermaid
-flowchart LR
-    R["Replay producer, steps after the cutoff"] -->|"topic transactions"| K["Kafka"]
-    K --> C["Consumer, feature vector"]
-    C -->|"POST /predict"| A["FastAPI"]
-    A -->|"score"| C
-    C -->|"single writer, WAL"| DB[("SQLite")]
-    DB -->|"read only"| D["Dashboard"]
-    A -->|"/metrics"| P["Prometheus"] --> G["Grafana"]
-```
-
-### Airflow DAG order
-
-```mermaid
-flowchart LR
-    E["extract_window"] --> B["build_features"]
-    E --> S["score_batch"]
-    B --> S
-    S --> W["write_partition"]
-    W --> Q["quality_check"]
-```
 
 ## Run instructions
 
@@ -178,7 +134,7 @@ make airflow-test
 make airflow-down
 ```
 
-`make airflow-up` prepares `.env` secrets and starts Airflow 3 with Postgres for metadata, with the UI at `http://127.0.0.1:8080`. The DAG `fraud_batch_scoring` runs daily with catch-up and writes `data/scored/date=YYYY-MM-DD/part-0.parquet`. `tests/test_dag.py` skips on the host because Airflow is not installed there. It runs through `make airflow-test`, which executes it inside the Airflow image.
+`make airflow-up` prepares `.env` secrets and starts Airflow 3 with Postgres for metadata, with the UI at `http://127.0.0.1:8080`. The DAG `fraud_batch_scoring` runs daily with catch-up and writes `data/scored/date=YYYY-MM-DD/part-0.parquet`. Its tasks run in this order: `extract_window`, `build_features`, `score_batch`, `write_partition`, `quality_check`. `tests/test_dag.py` skips on the host because Airflow is not installed there. It runs through `make airflow-test`, which executes it inside the Airflow image.
 
 ### Charts
 
@@ -186,7 +142,7 @@ make airflow-down
 .venv/bin/python docs/make_figures.py
 ```
 
-Regenerates the three charts in `docs/img/` from the files in `reports/`.
+Regenerates the three result charts in `docs/img/` from the files in `reports/`. The architecture diagram is drawn by hand and is not generated.
 
 ## Repository layout
 
@@ -196,7 +152,7 @@ api/          FastAPI prediction service
 dashboard/    Streamlit app with cloud and local modes
 data/         PaySim inputs, processed Parquet, scored partitions, and the display sample
 docker/       Dockerfiles, compose files, Prometheus and Grafana configuration
-docs/         Chart script and generated images
+docs/         Chart script, architecture diagram, and generated images
 k8s/          Kubernetes manifests for the kind cluster
 loadtest/     Locust files, experiment scripts, and report generation
 models/       Saved LightGBM model and feature list
