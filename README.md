@@ -1,5 +1,9 @@
 # E-Wallet Fraud Detection: End-to-End Real-Time and Batch Scoring with Monitoring
 
+![CI](https://github.com/nadhifspaer/E-Wallet-Fraud-Detection/actions/workflows/ci.yml/badge.svg)
+
+Streamlit demo: https://e-wallet-fraud-detection.streamlit.app/
+
 A single LightGBM classifier that scores e-wallet transactions for fraud risk, with four ways to run it: an in-process Streamlit demo, a local streaming stack, a Kubernetes serving demo, and an Airflow batch pipeline.
 
 ## Architecture
