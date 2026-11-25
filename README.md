@@ -23,14 +23,12 @@ Data flows from PaySim through Parquet, features, and LightGBM training into one
 
 ## Results
 
-All values come from files in `reports/`. Model metrics are on the temporal test split only (123,580 rows, 1,654 fraud rows).
-
 ### Model (`reports/model_evaluation.md`)
 
-| Population | PR-AUC | Precision@100 | Precision@1,000 | Recall@1,654 |
-|---|---|---|---|---|
-| TRANSFER and CASH_OUT rows | 0.9809 | 1.0000 | 0.9980 | 0.9601 |
-| All rows | 0.9807 | 1.0000 | 0.9980 | 0.9601 |
+| Population | PR-AUC, train (steps 1 to 594) | PR-AUC, train (steps 535 to 594) | PR-AUC, test (steps 595 to 743) |
+|---|---|---|---|
+| All rows | 0.9937 | 0.9978 | 0.9807 |
+| TRANSFER and CASH_OUT rows | 0.9937 | 0.9978 | 0.9809 |
 
 | Target recall | Flagged | False alarms | False alarm rate, TRANSFER and CASH_OUT | False alarm rate, all rows |
 |---|---|---|---|---|
